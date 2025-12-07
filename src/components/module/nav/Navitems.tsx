@@ -14,38 +14,27 @@ import {
 
 export function Navitems() {
   const isMobile = useIsMobile();
+  const navMenus=[
+    {name:"Home", path:"/"},
+    {name:"Find Rentals", path:"/rentals"},
+    {name:"About Us", path:"/about"},
+  ]
 
   return (
-    <NavigationMenu className="bg-transparent" viewport={isMobile}>
-      <NavigationMenuList className="flex-wrap">
-
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            asChild
-            className={`${navigationMenuTriggerStyle()} bg-transparent`}
-          >
-            <Link href="/">Home</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            asChild
-            className={`${navigationMenuTriggerStyle()} bg-transparent`}
-          >
-            <Link href="/rentals">Find Rentals</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            asChild
-            className={`${navigationMenuTriggerStyle()} bg-transparent`}
-          >
-            <Link href="/about">About Us</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-
+    <NavigationMenu className="bg-transparent w-fit" >
+      <NavigationMenuList className="flex-wrap w-fit">
+            {
+              navMenus.map((menu,index)=>(
+                <NavigationMenuItem key={index+1}>
+                  <NavigationMenuLink
+                    asChild
+                    className={`${navigationMenuTriggerStyle()} bg-transparent`}
+                  >
+                    <Link href={menu.path}>{menu.name}</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))
+            }
       </NavigationMenuList>
     </NavigationMenu>
   );

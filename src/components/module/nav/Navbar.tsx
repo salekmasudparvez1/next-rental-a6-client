@@ -12,7 +12,7 @@ const Navbar = () => {
   const [loginedIn, setLoggedIn] = React.useState(true);
   
   return (
-    <div className="nav_shadow flex items-center justify-between px-4 py-3 rounded-sm">
+    <div className="fixed top-0 nav_shadow flex items-center justify-between px-4 py-3 w-[1130px] rounded-t-none"  >
       <Logo />
       <Navitems />
       {!loginedIn && <AuthButtonGroup />}

@@ -48,7 +48,7 @@ export default function HeroSection() {
     <div className="w-full pb-20">
 
       {/* 🔥 HERO SECTION */}
-      <section className="h-[60vh] w-full flex flex-col items-center justify-center text-center px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+      <section className="h-[60vh] w-full flex flex-col items-center justify-center text-center px-4 bg-radial from-red-400 to-reed-700 text-white">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           Find Your Perfect Rental House Today!
         </h1>
@@ -57,7 +57,7 @@ export default function HeroSection() {
           Search by location, budget, and bedrooms — Get the right home instantly.
         </p>
 
-        <Button asChild size="lg" className="bg-white text-blue-700 font-semibold hover:bg-gray-100">
+        <Button asChild size="lg" className="bg-white text-red-700 font-semibold hover:bg-gray-100">
           <Link href="/post-rental">Post Rental House Info</Link>
         </Button>
       </section>
@@ -93,7 +93,7 @@ export default function HeroSection() {
           </SelectContent>
         </Select>
 
-        <Button className="w-full bg-blue-600 hover:bg-blue-700">
+        <Button className="w-full bg-red-600 hover:bg-red-700">
           Search
         </Button>
       </div>

@@ -11,9 +11,7 @@ button, p {
 	width: 100vw;
 	z-index: 1;
 }
-.nav_shadow {
-  box-shadow: 0 2px 10px var(--black-a2);
-}
+
 
 .NavigationMenuList {
 	display: flex;
