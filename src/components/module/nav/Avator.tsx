@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User, LogOut, FileText } from "lucide-react"
+import { logout } from "@/service/auth/AuthService"
 
 export function Avator() {
     return (
@@ -37,7 +38,7 @@ export function Avator() {
                         <span>Dashboard</span>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                 </DropdownMenuItem>

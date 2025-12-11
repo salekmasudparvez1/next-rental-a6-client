@@ -6,8 +6,18 @@ export const navigationsData: NavigationType[] = [
     items: [
       {
         title: "Home",
-        href: "/",
         iconName: "House",
+        items: [
+          {
+            title: "Dashboard",
+            href: "/admin/dashboard",
+          },
+          {
+            title: "Analytics",
+            href: "/admin/analytics",
+          },
+        ]
+        
       },
     ],
   },

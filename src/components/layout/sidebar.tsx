@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ChevronDown } from "lucide-react"
+import Logo from "@/assets/logo/logo.png"
 
 import type { NavigationNestedItem, NavigationRootItem } from "@/types"
 
@@ -110,13 +111,12 @@ export function Sidebar() {
           onClick={() => isMobile && setOpenMobile(!openMobile)}
         >
           <Image
-            src="/images/icons/shadboard.svg"
-            alt=""
-            height={24}
-            width={24}
+            src={Logo}
+            alt="Find Basa Logo"
+            height={30}
             className="dark:invert"
           />
-          <span>Shadboard</span>
+         
         </Link>
         <CommandMenu buttonClassName="max-w-full" />
       </SidebarHeader>

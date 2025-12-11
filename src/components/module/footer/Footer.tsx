@@ -6,50 +6,75 @@ import { Icon } from '@iconify/react';
 
 const Footer = () => {
   return (
-    <footer>
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 max-md:flex-col sm:px-6 sm:py-6 md:gap-6 md:py-8">
-
-        <Link href="#">
-          <div className="flex items-center gap-3">
-            <Image src={Logo} alt="Logo" height={30} />
+    <footer className="bg-gray-200 ">
+      {/* Main Footer Content */}
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+          {/* Brand Section */}
+          <div className="flex flex-col gap-4">
+            <Link href="#">
+              <div className="flex items-center gap-3">
+                <Image src={Logo} alt="Logo" height={30} />
+              </div>
+            </Link>
+            <p className="text-sm text-gray-600">Making rentals easier for everyone.</p>
           </div>
-        </Link>
 
-        <div className="flex items-center gap-5 whitespace-nowrap">
-          <Link href="#" className="active:text-red-500 hover:text-red-500 transition-all duration-500">Home</Link>
-          <Link href="/rentals">Find Rentals</Link>
-          <Link href="/about-us">About Us</Link>
-         
-        </div>
+          {/* Navigation Links */}
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-4">Navigation</h3>
+            <div className="flex flex-col gap-2">
+              <Link href="#" className="text-sm text-gray-600 hover:text-red-500 transition-colors">Home</Link>
+              <Link href="/rentals" className="text-sm text-gray-600 hover:text-red-500 transition-colors">Find Rentals</Link>
+              <Link href="/about-us" className="text-sm text-gray-600 hover:text-red-500 transition-colors">About Us</Link>
+            </div>
+          </div>
 
-        <div className="flex items-center gap-4">
-          {/* Facebook */}
-          <Link href="#">
-           <Icon icon="akar-icons:facebook-fill" width="24" height="24" />
-          </Link>
+          {/* Additional Links */}
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
+            <div className="flex flex-col gap-2">
+              <Link href="#" className="text-sm text-gray-600 hover:text-red-500 transition-colors">Terms of Use</Link>
+              <Link href="#" className="text-sm text-gray-600 hover:text-red-500 transition-colors">Privacy Policy</Link>
+              <Link href="#" className="text-sm text-gray-600 hover:text-red-500 transition-colors">Cookie Policy</Link>
+            </div>
+          </div>
 
-          {/* Instagram - FIXED SVG ERROR */}
-          <Link href="#">
-           <Icon icon="skill-icons:instagram" width="24" height="24" />
-          </Link>
-
-          {/* Twitter */}
-          <Link href="#">
-           <Icon icon="akar-icons:twitter-fill" width="24" height="24" />
-          </Link>
-
-          {/* Dribbble */} 
-          <Link href="#">
-           <Icon icon="akar-icons:dribbble-fill" width="24" height="24" />
-          </Link>
+          {/* Contact Information */}
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-4">Contact</h3>
+            <div className="flex flex-col gap-2">
+              <a href="mailto:info@example.com" className="text-sm text-gray-600 hover:text-red-500 transition-colors">
+                info@example.com
+              </a>
+              <a href="tel:+1234567890" className="text-sm text-gray-600 hover:text-red-500 transition-colors">
+                +1 (234) 567-890
+              </a>
+              <div className="flex items-center gap-4 mt-2">
+                {/* Facebook */}
+                <a href="#" aria-label="Facebook">
+                  <Icon icon="akar-icons:facebook-fill" width="20" height="20" className="text-gray-600 hover:text-red-500 transition-colors" />
+                </a>
+                {/* Instagram */}
+                <a href="#" aria-label="Instagram">
+                  <Icon icon="skill-icons:instagram" width="20" height="20" className="text-gray-600 hover:text-red-500 transition-colors" />
+                </a>
+                {/* Twitter */}
+                <a href="#" aria-label="Twitter">
+                  <Icon icon="akar-icons:twitter-fill" width="20" height="20" className="text-gray-600 hover:text-red-500 transition-colors" />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <Separator />
 
-      <div className="mx-auto flex max-w-7xl justify-center px-4 py-8 sm:px-6">
-        <p className="text-center font-medium text-balance">
-          ©{new Date().getFullYear()} <Link href="#">Shadcn/studio</Link>, Made with ❤️ for better web.
+      {/* Copyright Section */}
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <p className="text-center text-sm text-gray-600">
+          © {new Date().getFullYear()} Shadcn/studio. All rights reserved. Made with ❤️ for better web.
         </p>
       </div>
     </footer>

@@ -16,19 +16,19 @@ export function Footer() {
             rel="noopener noreferrer"
             className={cn(buttonVariants({ variant: "link" }), "inline p-0")}
           >
-            Shadboard
+            Find Basa
           </a>
           .
         </p>
         <p className="text-xs text-muted-foreground md:text-sm">
           Designed & Developed by{" "}
           <a
-            href="https://github.com/Qualiora"
+            href="https://github.com/salekmasudparvez1"
             target="_blank"
             rel="noopener noreferrer"
             className={cn(buttonVariants({ variant: "link" }), "inline p-0")}
           >
-            Qualiora
+            Salek Masud Parvez
           </a>
           .
         </p>
