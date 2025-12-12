@@ -1,11 +1,12 @@
 export interface IUser {
-    username: string;
+    id: string;
     email: string;
     role: string;
-    photoURL: string;
     isBlocked: boolean;
+    isActive: boolean;
+    subscriptionPlan: string;
     status: string;
-    phoneNumber: string;
+    photoURL: string;
     iat?: number;
     exp?: number;
 }
