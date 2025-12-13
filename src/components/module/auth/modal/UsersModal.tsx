@@ -299,7 +299,7 @@ export function UserRowActions({ user, onUpdate, onDelete }: Props) {
                             <div className="flex items-center gap-2">
                                 <Checkbox
                                     checked={form.isBlocked}
-                                    onCheckedChange={(v) => handleChange("isBlocked", !!v)}
+                                    onCheckedChange={(v) => handleChange("isBlocked","id")}
                                 />
                                 <Label>Blocked</Label>
                             </div>
@@ -307,7 +307,7 @@ export function UserRowActions({ user, onUpdate, onDelete }: Props) {
                             <div className="flex items-center gap-2">
                                 <Checkbox
                                     checked={form.isActive}
-                                    onCheckedChange={(v) => handleChange("isActive", !!v)}
+                                    onCheckedChange={(v) => handleChange("isActive", "id")}
                                 />
                                 <Label>Active</Label>
                             </div>
