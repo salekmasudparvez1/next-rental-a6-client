@@ -1,7 +1,6 @@
 
 import { getCurrentUser } from "@/service/auth/AuthService";
 import { IUser } from "@/types/user";
-
 import {
   createContext,
   Dispatch,
@@ -24,26 +23,16 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const handleUser = async () => {
+    const user = await getCurrentUser();
+    setUser(user);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    let mounted = true;
-    const run = async () => {
-      // begin loading only if still mounted
-      if (mounted) setIsLoading(true);
-      try {
-        const nextUser = await getCurrentUser();
-        if (mounted) {
-          // prevent unnecessary state updates
-          setUser((prev) => (prev?.id === nextUser?.id ? prev : nextUser));
-        }
-      } finally {
-        if (mounted) setIsLoading(false);
-      }
-    };
-    run();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    handleUser();
+  }, [isLoading]);
 
   return (
     <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>

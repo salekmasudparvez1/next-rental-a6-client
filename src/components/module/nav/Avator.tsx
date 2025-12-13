@@ -17,20 +17,24 @@ import toast from "react-hot-toast"
 
 export function Avator() {
     const router = useRouter();
-    const { user, setUser ,setIsLoading} = useUser();
+    const { user, setUser, setIsLoading } = useUser();
+   
+
     const handleLogout = async () => {
         try {
             setIsLoading(true);
             await logout();
-            setUser(null); // Clear user from context
-            router.push("/auth/login"); // Redirect to login
+            setUser(null);
             toast.success("Logged out successfully");
-        } catch (error :unknown) {
+            router.push("/auth/login");
+        } catch (error: unknown) {
             toast.error(error instanceof Error ? error.message : "Logout failed");
         } finally {
             setIsLoading(false);
         }
-    }
+    };
+
+
 
 
     return (
@@ -38,13 +42,13 @@ export function Avator() {
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="p-0 rounded-full">
                     <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarImage src={user?.photoURL} />
+                        <AvatarFallback>{user?.userName?.charAt(0)}</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="start">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuContent className="w-56" align="end" >
+                <DropdownMenuLabel>Username:@{user?.userName}</DropdownMenuLabel>
                 <DropdownMenuGroup>
                     <DropdownMenuItem onClick={() => router.push("/profile")}>
                         <User className="mr-2 h-4 w-4" />

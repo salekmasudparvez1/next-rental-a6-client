@@ -4,9 +4,9 @@ import { getCurrentUser } from "./service/auth/AuthService";
 const authRoutes = ["/auth/login", "/auth/register"];
 
 const roleBasedPrivateRoutes = {
-   landlord: [/^\/landlord/, /^\/create-post/],
-   tenant: [/^\/tenant/],
-   admin: [/^\/admin/, /^\/tenant/, /^\/landlord/],
+   landlord: [/^\/landlord/, /^\/create-post/, /^\/profile/],
+   tenant: [/^\/tenant/, /^\/profile/],
+   admin: [/^\/admin/, /^\/tenant/, /^\/landlord/, /^\/profile/],
 };
 
 type Role = keyof typeof roleBasedPrivateRoutes;
@@ -43,6 +43,7 @@ export const config = {
   matcher: [
     "/auth/login",
     "/auth/register",
+    "/profile",
     "/landloard",
     "/landloard/:path*",
     "/tenant",

@@ -17,6 +17,7 @@ export const RegisterUser = async (userData: FieldValues) => {
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: "include",
             body: JSON.stringify(data)
         })
         const result = await res.json();
@@ -42,6 +43,7 @@ export const loginUser = async (userData: FieldValues) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(data),
     });
 
