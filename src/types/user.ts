@@ -11,3 +11,18 @@ export interface IUser {
     iat?: number;
     exp?: number;
 }
+export interface IUserForTable {
+    _id: string;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+    role: 'admin' | 'landlord' | 'tenant';
+    isBlocked: boolean;
+    isActive: boolean;
+    photoURL: string;
+    status: 'pending' | 'approved' | 'rejected';
+    subscriptionPlan: 'free' | 'premium';
+    createdAt: string;
+    updatedAt: string;
+}

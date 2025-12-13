@@ -74,6 +74,37 @@ export const getCurrentUser = async () => {
     return null;
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("accessToken")?.value;
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/all-users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch users: ${res.status}`);
+    }
+
+    const result = await res.json();
+    return result;
+  } catch (error: unknown) {
+    console.error("Get all users error:", error);
+    throw error instanceof Error ? error : new Error(String(error));
+  }
+}
 export const logout = async () => {
   (await cookies()).delete("accessToken");
   (await cookies()).delete("refreshToken");

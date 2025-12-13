@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 
 import type { NavigationNestedItem, NavigationRootItem } from "@/types"
 
-import { navigationsData } from "@/data/navigations"
+
 
 import { cn, isActivePathname } from "@/lib/utils"
 
@@ -22,8 +22,10 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar"
 import { DynamicIcon } from "@/components/dynamic-icon"
+import { useNavigations } from "@/service/nav"
 
 export function TopBarHeaderMenubar() {
+  const { navigations: navigationsData } = useNavigations()
   const pathname = usePathname()
 
   const renderMenuItem = (item: NavigationRootItem | NavigationNestedItem) => {

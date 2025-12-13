@@ -10,7 +10,7 @@ export const getProfileData = async () => {
         if (!token) {
             throw new Error("No authentication token found");
         }
-        console.log(token);
+      
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
             method: "GET",

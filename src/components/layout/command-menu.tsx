@@ -7,7 +7,7 @@ import { ChevronDown, Search } from "lucide-react"
 import type { NavigationNestedItem, NavigationRootItem } from "@/types"
 import type { DialogProps } from "@radix-ui/react-dialog"
 
-import { navigationsData } from "@/data/navigations"
+
 
 import { cn, isActivePathname } from "@/lib/utils"
 
@@ -30,12 +30,14 @@ import { DialogTitle } from "@/components/ui/dialog"
 import { Keyboard } from "@/components/ui/keyboard"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { DynamicIcon } from "@/components/dynamic-icon"
+import { useNavigations } from "@/service/nav"
 
 interface CommandMenuProps extends DialogProps {
   buttonClassName?: string
 }
 
 export function CommandMenu({ buttonClassName, ...props }: CommandMenuProps) {
+   const { navigations } = useNavigations()
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
@@ -141,7 +143,7 @@ export function CommandMenu({ buttonClassName, ...props }: CommandMenuProps) {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <ScrollArea className="h-[300px] max-h-[300px]">
-            {navigationsData.map((nav) => (
+            {navigations.map((nav) => (
               <CommandGroup
                 key={nav.title}
                 heading={nav.title}

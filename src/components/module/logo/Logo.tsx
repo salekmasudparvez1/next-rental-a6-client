@@ -3,7 +3,7 @@ import logourl from '@/assets/logo/logo.png';
 
 const Logo = () => {
     return (
-        <div className='w-fit'>
+        <div >
             <Image src={logourl} alt="Logo" width={120} priority height={40} />
         </div>
     );

@@ -8,7 +8,7 @@ import Logo from "@/assets/logo/logo.png"
 
 import type { NavigationNestedItem, NavigationRootItem } from "@/types"
 
-import { navigationsData } from "@/data/navigations"
+
 
 import { isActivePathname } from "@/lib/utils"
 
@@ -35,18 +35,22 @@ import {
 } from "@/components/ui/sidebar"
 import { DynamicIcon } from "@/components/dynamic-icon"
 import { CommandMenu } from "./command-menu"
+import { useNavigations } from "@/service/nav"
 
 export function Sidebar() {
   const pathname = usePathname()
+  const { navigations } = useNavigations()
   const { openMobile, setOpenMobile, isMobile } = useSidebar()
   const { settings } = useSettings()
-
+ 
+  console.log('nav-items',navigations);
   const isHoizontalAndDesktop = settings.layout === "horizontal" && !isMobile
 
   // If the layout is horizontal and not on mobile, don't render the sidebar. (We use a menubar for horizontal layout navigation.)
   if (isHoizontalAndDesktop) return null
 
   const renderMenuItem = (item: NavigationRootItem | NavigationNestedItem) => {
+
     // If the item has nested items, render it with a collapsible dropdown.
     if (item.items) {
       return (
@@ -122,9 +126,8 @@ export function Sidebar() {
       </SidebarHeader>
       <ScrollArea>
         <SidebarContent className="gap-0">
-          {navigationsData.map((nav) => (
+          {navigations.map((nav) => (
             <SidebarGroup key={nav.title}>
-              <SidebarGroupLabel>{nav.title}</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {nav.items.map((item) => (
