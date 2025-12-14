@@ -9,11 +9,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { getProfileData } from "../../../service/profile/profileService/Index";
 import ProfileCard from "@/components/module/profile/ProfileCard";
+import { redirect } from "next/navigation";
 
 
 export default async function ProfilePage() {
     const data = await getProfileData();
-    const { username, role, status,email, photoURL, phoneNumber,subscriptionPlan } = data?.data;
+    // If no auth token or no data, redirect to login
+    if (!data || !data?.data) {
+        redirect("/auth/login");
+    }
+
+    const { username, role, status, email, photoURL, phoneNumber, subscriptionPlan } = data.data;
     return (
         <div className="p-6 bg-slate-50 min-h-screen">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">

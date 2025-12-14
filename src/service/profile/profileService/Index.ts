@@ -8,7 +8,8 @@ export const getProfileData = async () => {
         const token = cookieStore.get('accessToken')?.value;
 
         if (!token) {
-            throw new Error("No authentication token found");
+            // No token present; return null so caller can handle (e.g., redirect)
+            return null;
         }
       
 
