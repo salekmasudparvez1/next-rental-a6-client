@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export const getAllUsers = async (pageIndex:number, pageSize:number) => {
@@ -11,7 +12,7 @@ export const getAllUsers = async (pageIndex:number, pageSize:number) => {
       throw new Error("No authentication token found");
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/all-users?page=${pageIndex + 1}&limit=${pageSize}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users?page=${pageIndex + 1}&limit=${pageSize}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -19,6 +20,7 @@ export const getAllUsers = async (pageIndex:number, pageSize:number) => {
       },
       credentials: "include",
       cache: "no-store",
+      next: { tags: ["users"] },
     });
 
     if (!res.ok) {
@@ -41,8 +43,8 @@ export const deleteUser = async (userId: string) => {
         throw new Error("No authentication token found");
     }
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/delete/${userId}`, {
-            method: "POST",
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/${userId}`, {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -53,11 +55,41 @@ export const deleteUser = async (userId: string) => {
 
         if (!res.ok) {
             throw new Error(`Failed to Delete users: ${res.status}`);
-            return res.json()
         }
+        revalidatePath("/admin/all-users");
+        return res.json()
     } catch (error: unknown) {
 
         throw error instanceof Error ? error : new Error(String(error));
     }
 
 }
+
+export const updateUserRole = async (userId: string, newRole: string) => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("accessToken")?.value;
+
+    if (!token) {
+        throw new Error("No authentication token found");
+    }
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            credentials: "include",
+            cache: "no-store",
+            body: JSON.stringify({ role: newRole }),
+        })
+
+        if (!res.ok) {
+            throw new Error(`Failed to update user role: ${res.status}`);
+        }
+        revalidatePath("/admin/all-users");
+        return res.json()
+    } catch (error: unknown) {
+
+        throw error instanceof Error ? error : new Error(String(error));
+    }}

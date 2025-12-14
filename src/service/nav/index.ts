@@ -20,7 +20,7 @@ export function useNavigations() {
   useEffect(() => {
     const loadNavigations = async () => {
       const user = await getCurrentUser()
-      console.log('get-nav',user);
+     
 
       switch (user?.role) {
         case "admin":

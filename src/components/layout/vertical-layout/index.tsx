@@ -10,7 +10,7 @@ export function VerticalLayout({ children }: { children: ReactNode }) {
       <Sidebar />
       <div className="w-full">
         <VerticalLayoutHeader />
-        <main className="min-h-[calc(100svh-6.82rem)] bg-muted/40">
+        <main className="h-[calc(100svh-6.82rem)] overflow-y-auto bg-muted/40">
           {children}
         </main>
         <Footer />

@@ -55,20 +55,13 @@ interface Props {
     onDelete: (id: string) => void
 }
 
-export function UserRowActions({ user, onUpdate, onDelete }: Props) {
+export function UserRowActions({ user, onDelete }: Props) {
     const [showView, setShowView] = useState(false)
-    const [showEdit, setShowEdit] = useState(false)
+  
     const [showDelete, setShowDelete] = useState(false)
-    const [form, setForm] = useState(user)
+    
 
-    const handleChange = (field: keyof IUserForTable, value: string) => {
-        setForm((prev) => ({ ...prev, [field]: value }))
-    }
-
-    const handleSave = () => {
-        onUpdate(form)
-        setShowEdit(false)
-    }
+    
 
     return (
         <>
@@ -81,7 +74,6 @@ export function UserRowActions({ user, onUpdate, onDelete }: Props) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-40">
                     <DropdownMenuItem onSelect={() => setShowView(true)}><View /> View</DropdownMenuItem>
-                    <DropdownMenuItem onSelect={() => setShowEdit(true)}><Edit />Edit</DropdownMenuItem>
                     <DropdownMenuItem onSelect={() => setShowDelete(true)} className="text-red-600">
                         <Trash /> Delete
                     </DropdownMenuItem>
@@ -163,165 +155,7 @@ export function UserRowActions({ user, onUpdate, onDelete }: Props) {
                 </DialogContent>
             </Dialog>
 
-            {/* Edit Dialog */}
-            <Dialog open={showEdit} onOpenChange={setShowEdit}>
-                <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                        <DialogTitle>Edit User</DialogTitle>
-                        <DialogDescription>
-                            Edit the details of <b>{user.username}</b>
-                        </DialogDescription>
-                    </DialogHeader>
-
-                    <div className="space-y-4">
-                        {/* Username */}
-                        <div className="space-y-1">
-                            <Label>Username</Label>
-                            <Input
-                                value={form.username}
-                                onChange={(e) => handleChange("username", e.target.value)}
-                            />
-                        </div>
-
-                        {/* Email */}
-                        <div className="space-y-1">
-                            <Label>Email</Label>
-                            <Input
-                                type="email"
-                                value={form.email}
-                                onChange={(e) => handleChange("email", e.target.value)}
-                            />
-                        </div>
-
-                        {/* Phone */}
-                        <div className="space-y-1">
-                            <Label>Phone Number</Label>
-                            <Input
-                                value={form.phoneNumber}
-                                onChange={(e) => handleChange("phoneNumber", e.target.value)}
-                            />
-                        </div>
-
-                        <div className="flex  justify-between items-center flex-wrap">
-                            {/* Role */}
-                            <div className="space-y-1">
-                                <Label>Role</Label>
-                                <Select
-                                    value={form.role}
-                                    onValueChange={(value) => handleChange("role", value)}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select role" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-
-                                        <SelectItem value="landlord">Landlord</SelectItem>
-                                        <SelectItem value="tenant">Tenant</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            {/* Status */}
-                            <div className="space-y-1">
-                                <Label>Status</Label>
-                                <Select
-                                    value={form.status}
-                                    onValueChange={(value) => handleChange("status", value)}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select status" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="pending" className="text-yellow-600">
-                                            <div className="flex items-center gap-2">
-                                                <Clock className="h-4 w-4 text-yellow-600" />
-                                                Pending
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="approved" className="text-green-600">
-                                            <div className="flex items-center font-bold gap-2">
-                                                <CheckCircle className="h-4 w-4 text-green-600" />
-                                                Approved
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="rejected" className="text-red-600">
-                                            <div className="flex font-bold items-center gap-2">
-                                                <XCircle className="h-4 w-4 text-red-600" />
-                                                Rejected
-                                            </div>
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            {/* Subscription */}
-                            <div className="space-y-1">
-                                <Label>Subscription Plan</Label>
-                                <Select
-                                    value={form.subscriptionPlan}
-                                    onValueChange={(value) =>
-                                        handleChange("subscriptionPlan", value)
-                                    }
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select plan" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="free" className="text-red-600">
-                                            <div className="flex items-center gap-2">
-                                                <Crown className="h-4 w-4 text-red-600" />
-                                                Free
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="premium" className="text-yellow-600">
-                                            <div className="flex items-center gap-2">
-                                                <Crown className="h-4 w-4 text-yellow-600" />
-                                                Premium
-                                            </div>
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-
-                        {/* Password */}
-                        <div className="space-y-1">
-                            <Label>Password (optional)</Label>
-                            <Input
-                                type="password"
-                                value={form.password || ""}
-                                onChange={(e) => handleChange("password", e.target.value)}
-                            />
-                        </div>
-
-                        {/* Flags */}
-                        <div className="flex items-center gap-6">
-                            <div className="flex items-center gap-2">
-                                <Checkbox
-                                    checked={form.isBlocked}
-                                    onCheckedChange={(v) => handleChange("isBlocked","id")}
-                                />
-                                <Label>Blocked</Label>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                                <Checkbox
-                                    checked={form.isActive}
-                                    onCheckedChange={(v) => handleChange("isActive", "id")}
-                                />
-                                <Label>Active</Label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
-                        <Button onClick={handleSave}>Save Changes</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+          
 
             {/* Delete Confirmation Dialog */}
             <Dialog open={showDelete} onOpenChange={setShowDelete}>

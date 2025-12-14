@@ -43,7 +43,7 @@ export function Sidebar() {
   const { openMobile, setOpenMobile, isMobile } = useSidebar()
   const { settings } = useSettings()
  
-  console.log('nav-items',navigations);
+ 
   const isHoizontalAndDesktop = settings.layout === "horizontal" && !isMobile
 
   // If the layout is horizontal and not on mobile, don't render the sidebar. (We use a menubar for horizontal layout navigation.)

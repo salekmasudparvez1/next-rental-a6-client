@@ -21,7 +21,7 @@ export default async function ProfilePage() {
 
     const { username, role, status, email, photoURL, phoneNumber, subscriptionPlan } = data.data;
     return (
-        <div className="p-6 bg-slate-50 min-h-screen">
+        <div className="p-6 bg-slate-50">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Profile Card */}
                  <ProfileCard 

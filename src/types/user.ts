@@ -23,6 +23,6 @@ export interface IUserForTable {
     photoURL: string;
     status: 'pending' | 'approved' | 'rejected';
     subscriptionPlan: 'free' | 'premium';
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }

@@ -1,4 +1,3 @@
-
 "use client"
 import { DataTable } from '@/components/core/data-table/Table';
 import { UserRowActions } from '@/components/module/auth/modal/UsersModal';
@@ -6,14 +5,17 @@ import SectionHeader from '@/components/module/sectionHeader/SectionHeader';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from '@/components/ui/dropdown-menu';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUser } from '@/contexts/UseerContext';
-import { getAllUsers } from '@/service/user';
+import { deleteUser, getAllUsers, updateUserRole } from '@/service/user';
 
 import { IUserForTable } from '@/types/user';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, CheckCircle, ChevronDown, Clock, X, XCircle } from 'lucide-react';
+import { ArrowUpDown, CheckCircle, ChevronDown, Clock, XCircle } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { set } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 
@@ -29,6 +31,7 @@ const AllUsersPage = () => {
         pageIndex: 0,
         pageSize: 10,
     });
+    const router = useRouter();
 
     const LoadData = async () => {
         try {
@@ -64,8 +67,27 @@ const AllUsersPage = () => {
         console.log('updated user', updatedUser);
     }
 
-    const handleDelete = (id: string) => {
-        console.log('deleted user', id);
+    const handleDelete = async (id: string) => {
+
+        try {
+            const res = await deleteUser(id);
+            router.refresh()
+            setAllUsers(prevUsers => prevUsers.filter(user => user._id !== id));
+            toast.success(`@${res?.data?.username} has successfully been deleted` || 'User deleted successfully');
+
+        } catch (error) {
+            router.refresh()
+            toast.error(`${error instanceof Error ? error?.message : "Failed to delete user"}` || 'Failed to delete user');
+        }
+    }
+    const handleRoleChange = async (id: string, newRole: string) => {
+        const res = await updateUserRole(id, newRole);
+        if (res?.success) {
+            toast.success(`User role updated to ${newRole}`);
+            setAllUsers(prevUsers => prevUsers.map(user => user._id === id ? { ...user, role: newRole as "admin" | "landlord" | "tenant" } : user));
+        } else {
+            toast.error('Failed to update user role');
+        }
     }
 
     const columns: ColumnDef<IUserForTable>[] = [
@@ -129,38 +151,55 @@ const AllUsersPage = () => {
                 </Button>
             ),
             enableSorting: true,
-            cell: ({ row }) => (
-                <span className={`px-2 py-1 rounded-full text-white text-xs font-medium ${row?.original?.role === 'admin' ? 'bg-blue-500' : row?.original?.role === 'landlord' ? 'bg-purple-500' : 'bg-gray-500'}  `}>
-                    {row?.original?.role}
-                </span>
-            ),
-        },
-        {
-            accessorKey: "status",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Status
-                    <ArrowUpDown />
-                </Button>
-            ),
-            enableSorting: true,
 
             cell: ({ row }) => (
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-white text-xs font-medium ${row?.original?.status === 'approved' ? 'bg-green-500' : row?.original?.status === 'rejected' ? 'bg-red-500' : 'bg-yellow-500'}`}>
-                    {row?.original?.status === 'approved' ? (
-                        <CheckCircle className="h-4 w-4" />
-                    ) : row?.original?.status === 'pending' ? (
-                        <Clock className="h-4 w-4" />
-                    ) : (
-                        <XCircle className="h-4 w-4" />
-                    )}
-                    <span className="capitalize">{row?.original?.status}</span>
-                </div>
+                <Select value={row?.original?.role} onValueChange={(value) => handleRoleChange(row?.original?._id, value)}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="landlord">
+                            <span
+                                className="px-2 py-1 rounded w-full text-white text-xs font-medium bg-purple-500"
+                            >
+                                Landlord
+                            </span>
+                        </SelectItem>
+                        <SelectItem value="tenant">
+                            <span className='px-2 py-1 rounded w-full text-white text-xs font-medium bg-gray-500'>
+                                 Tenant
+                            </span>
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
             ),
         },
+        // {
+        //     accessorKey: "status",
+        //     header: ({ column }) => (
+        //         <Button
+        //             variant="ghost"
+        //             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        //         >
+        //             Status
+        //             <ArrowUpDown />
+        //         </Button>
+        //     ),
+        //     enableSorting: true,
+
+        //     cell: ({ row }) => (
+        //         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-white text-xs font-medium ${row?.original?.status === 'approved' ? 'bg-green-500' : row?.original?.status === 'rejected' ? 'bg-red-500' : 'bg-yellow-500'}`}>
+        //             {row?.original?.status === 'approved' ? (
+        //                 <CheckCircle className="h-4 w-4" />
+        //             ) : row?.original?.status === 'pending' ? (
+        //                 <Clock className="h-4 w-4" />
+        //             ) : (
+        //                 <XCircle className="h-4 w-4" />
+        //             )}
+        //             <span className="capitalize">{row?.original?.status}</span>
+        //         </div>
+        //     ),
+        // },
         {
             accessorKey: "email",
             header: ({ column }) => (
