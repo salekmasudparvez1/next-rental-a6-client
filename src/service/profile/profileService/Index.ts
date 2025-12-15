@@ -31,7 +31,7 @@ export const getProfileData = async () => {
         const result = await res.json();
         return result;
     } catch (error: unknown) {
-        console.error("Profile fetch error:", error);
+        
         throw error instanceof Error ? error : new Error(String(error));
     }
 }
