@@ -4,6 +4,7 @@ export interface IFeature {
 }
 
 export interface RentalHouseFormData {
+  _id?: string
   title: string
   description: string
   location: {

@@ -16,42 +16,30 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { getAllPosts } from '@/service/post/postService';
 import { Bed, Edit, Eye, MapPinCheck, MoreHorizontal, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { RentalHouseFormData } from '@/types/post';
+import { useRouter } from 'next/navigation';
+import ViewPostSkeleton from '@/components/module/loading/ViewPostSkeleton';
 
-/**
- * Local types (remove if you already import them from '@/types/post')
- */
+
 export interface IFeature {
   name: string;
   color: string;
 }
 
-export interface RentalHouseFormData {
-  id?: string | number;
-  title: string;
-  description?: string;
-  location?: {
-    division?: string;
-    district?: string;
-    subDistrict?: string;
-    streetAddress?: string;
-    map?: {
-      lat?: number;
-      lng?: number;
-    };
-  };
-  status?: 'available' | 'rented' | 'maintenance' | string;
-  rentAmount?: number;
-  rentFrequency?: string;
-  bedroomNumber?: number;
-  features?: IFeature[];
-  images?: string[] | undefined;
-  image?: string | null;
-}
 
 const ViewPostPage = () => {
-  const [data, setData] = useState<RentalHouseFormData[]>([]);
+  const [postData, setPostData] = useState<RentalHouseFormData[]>([]);
   const [selectedPost, setSelectedPost] = useState<RentalHouseFormData | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [pageCount, setPageCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const router = useRouter();
+
 
   const openViewDialog = (post: RentalHouseFormData) => {
     setSelectedPost(post);
@@ -96,7 +84,7 @@ const ViewPostPage = () => {
         accessorKey: 'rentAmount',
         header: 'Rent Amount',
         cell: ({ row }) => {
-          const { rentAmount, rentFrequency } = row.original;
+          const { rentAmount, bedroomNumber } = row.original;
           const formatted = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
@@ -105,7 +93,7 @@ const ViewPostPage = () => {
           return (
             <div className="flex flex-col">
               <span className="font-semibold">{formatted}</span>
-              {rentFrequency && <span className="text-xs text-muted-foreground">/{rentFrequency}</span>}
+              {bedroomNumber && <span className="text-xs text-muted-foreground">/{bedroomNumber}</span>}
             </div>
           );
         },
@@ -165,10 +153,7 @@ const ViewPostPage = () => {
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
-                  onClick={() => {
-                    // implement edit logic
-                    console.log('edit', post.id);
-                  }}
+                  onClick={() => router.push(`/landlord/view-posts/${post._id}`)}
                 >
                   <Edit className="mr-2 h-4 w-4" /> Edit
                 </DropdownMenuItem>
@@ -177,7 +162,7 @@ const ViewPostPage = () => {
                   className="text-destructive"
                   onClick={() => {
                     // implement delete logic
-                    console.log('delete', post.id);
+                    console.log('delete', post);
                   }}
                 >
                   <Trash2 className="mr-2 h-4 w-4" /> Delete
@@ -188,27 +173,52 @@ const ViewPostPage = () => {
         },
       },
     ],
-    [] // no external deps besides stable functions
+    [router] // router is used in the Edit action
   );
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await getAllPosts();
-        setData(response?.data ?? []);
-      } catch (error) {
-        console.error('Failed to fetch posts', error);
+        setIsLoading(true);
+        const response = await getAllPosts(pagination?.pageIndex, pagination?.pageSize);
+        console.log('Fetched response:', response);
+        
+        type PostsResponse = {
+          data: RentalHouseFormData[];
+          meta: { total: number; limit: number, page: number };
+        };
+        
+
+        const { data, meta } = response.data as PostsResponse  
+        setPostData(data || []);
+        setPageCount(meta ? Math.ceil(meta.total / meta.limit) : 0);
+
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : "Failed to fetch users";
+        toast.error(errorMessage);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchPosts();
-  }, []);
+  }, [pagination?.pageIndex, pagination?.pageSize]);
+
+  if (isLoading) {
+    return <ViewPostSkeleton/>;
+  }
 
   return (
-    <div>
+    <div className='p-5 space-y-4'>
       <SectionHeader title="All Posts" subtitle="Posts" description="Manage all posts registered in the system." />
-
-      <DataTable data={data} columns={columns} />
+    
+      <DataTable
+        data={postData}
+        columns={columns}
+        manualPagination={true}
+        pageCount={pageCount}
+        onPaginationChange={setPagination}
+      />
 
       {/* Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={(open) => (open ? setIsDialogOpen(true) : closeDialog())}>
@@ -222,8 +232,8 @@ const ViewPostPage = () => {
             <div className="space-y-4 mt-2">
               <div className="flex items-start gap-4">
                 <Avatar className="h-16 w-16">
-                  {selectedPost.image ? (
-                    <AvatarImage src={selectedPost.image} alt={selectedPost.title} />
+                  {selectedPost.images ? (
+                    <AvatarImage src={selectedPost.images[0]} alt={selectedPost.title} />
                   ) : (
                     <AvatarFallback>{(selectedPost.title || '').slice(0, 2).toUpperCase()}</AvatarFallback>
                   )}
@@ -231,26 +241,34 @@ const ViewPostPage = () => {
 
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg font-semibold">{selectedPost.title}</h3>
-                  {selectedPost.location?.streetAddress && (
-                    <p className="text-sm text-muted-foreground flex items-center gap-2">
-                      <MapPinCheck className="h-4 w-4" /> {selectedPost.location.streetAddress}
-                    </p>
+                  {selectedPost.location && (
+                    <div className="text-sm text-muted-foreground space-y-1 mt-1">
+                      <p className="flex items-center gap-2">
+                        <MapPinCheck className="h-4 w-4" /> 
+                        <span>
+                          {selectedPost.location.streetAddress}
+                          {selectedPost.location.subDistrict && `, ${selectedPost.location.subDistrict}`}
+                          {selectedPost.location.district && `, ${selectedPost.location.district}`}
+                          {selectedPost.location.division && `, ${selectedPost.location.division}`}
+                        </span>
+                      </p>
+                    </div>
                   )}
                   <div className="mt-2 flex flex-wrap items-center gap-2">
                     {/* Status */}
                     {/* @ts-expect-error variant prop possibly */}
-                    <Badge variant={selectedPost.status === 'available' ? 'success' : selectedPost.status === 'rented' ? 'destructive' : 'secondary'}>
-                      {selectedPost.status}
+                    <Badge variant={selectedPost?.status === 'available' ? 'success' : selectedPost?.status === 'rented' ? 'destructive' : selectedPost?.status === 'maintenance' ? 'outline' : 'secondary'}>
+                      {selectedPost?.status}
                     </Badge>
 
                     {/* Rent */}
                     <div className="text-sm">
                       <span className="font-medium">
-                        {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(
+                        {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'BDT', maximumFractionDigits: 0 }).format(
                           Number(selectedPost.rentAmount ?? 0)
                         )}
                       </span>
-                      {selectedPost.rentFrequency && <span className="text-muted-foreground"> /{selectedPost.rentFrequency}</span>}
+                      /month
                     </div>
 
                     {/* Bedrooms */}
@@ -262,7 +280,7 @@ const ViewPostPage = () => {
               </div>
 
               {/* Description */}
-              {selectedPost.description && (
+              {selectedPost?.description && (
                 <div>
                   <h4 className="text-sm font-medium mb-1">Description</h4>
                   <p className="text-sm text-muted-foreground whitespace-pre-line">{selectedPost.description}</p>
@@ -270,7 +288,7 @@ const ViewPostPage = () => {
               )}
 
               {/* Features */}
-              {selectedPost.features?.length ? (
+              {selectedPost?.features?.length ? (
                 <div>
                   <h4 className="text-sm font-medium mb-1">Features</h4>
                   <div className="flex flex-wrap gap-2">
@@ -288,9 +306,9 @@ const ViewPostPage = () => {
                 <div>
                   <h4 className="text-sm font-medium mb-2">Images</h4>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {selectedPost.images.map((src, idx) => (
+                    {selectedPost?.images?.map((src, idx) => (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img key={idx} src={src} alt={`${selectedPost.title} ${idx + 1}`} className="h-32 w-full object-cover rounded-md" />
+                      <img key={idx} src={src} alt={`${selectedPost?.title} ${idx + 1}`} className="h-32 w-full object-cover rounded-md" />
                     ))}
                   </div>
                 </div>

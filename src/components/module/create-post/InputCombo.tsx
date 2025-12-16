@@ -17,7 +17,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 export interface ComboOption {
   value: string;
   label: string;
-  id:number;
+  id?: number;
 }
 
 interface InputComboProps {
@@ -46,13 +46,14 @@ const InputCombo: React.FC<InputComboProps> = ({
   }, [value]);
 
   const handleSelect = (selected: string) => {
-    if (!value) setInternalValue(selected === internalValue ? "" : selected);
-    onChange?.(selected === internalValue ? "" : selected);
+    const newValue = selected === internalValue ? "" : selected;
+    setInternalValue(newValue);
+    onChange?.(newValue);
     setOpen(false);
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col text-black">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

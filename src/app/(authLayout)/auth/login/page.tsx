@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { loginUser } from "@/service/auth/AuthService"
 import { useUser } from "@/contexts/UseerContext"
 import { useRouter, useSearchParams } from "next/navigation"
+import { Spinner } from "@/components/ui/spinner"
 
 
 
@@ -26,7 +27,7 @@ export default function LoginPage() {
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const { register, handleSubmit, formState: { errors }, watch ,setValue} = useForm<LoginData>({
+    const { register, handleSubmit, formState: { errors,isSubmitting }, watch ,setValue} = useForm<LoginData>({
         mode: "onChange",
     })
     const { setIsLoading,isLoading } = useUser();
@@ -137,7 +138,10 @@ export default function LoginPage() {
                         )}
                     </div>
 
-                    <Button type="submit" className="w-full mt-2">Login</Button>
+                    <Button type="submit" className="w-full mt-2" disabled={isSubmitting}>
+                       { isSubmitting && <Spinner/>}
+                        {isSubmitting ? "Logging in..." : "Login"}
+                        </Button>
                 </form>
             </CardContent>
 

@@ -11,11 +11,10 @@ import { deleteUser, getAllUsers, updateUserRole } from '@/service/user';
 
 import { IUserForTable } from '@/types/user';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, CheckCircle, ChevronDown, Clock, XCircle } from 'lucide-react';
+import { ArrowUpDown, ChevronDown} from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { set } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 
@@ -60,7 +59,7 @@ const AllUsersPage = () => {
     }, [pagination?.pageIndex, pagination?.pageSize]);
 
     const handleSelectedRows = (data: unknown) => {
-        console.log(data);
+        console.log('data', data);
     }
 
     const handleUpdate = (updatedUser: unknown) => {
