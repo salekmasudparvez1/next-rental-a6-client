@@ -24,7 +24,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -107,7 +106,10 @@ export function Sidebar() {
   }
 
   return (
-    <SidebarWrapper side="left">
+    <SidebarWrapper side="left" className="transition-all duration-100
+              [box-shadow:3px_3px_rgb(82_82_82)]
+              hover:translate-x-[3px] hover:translate-y-[3px]
+              hover:[box-shadow:0px_0px_rgb(82_82_82)]">
       <SidebarHeader>
         <Link
           href="/"
@@ -124,16 +126,19 @@ export function Sidebar() {
         </Link>
         <CommandMenu buttonClassName="max-w-full" />
       </SidebarHeader>
-      <ScrollArea>
-        <SidebarContent className="gap-0">
+      <ScrollArea >
+        <SidebarContent className="gap-0 ">
           {navigations.map((nav) => (
             <SidebarGroup key={nav.title}>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {nav.items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
+                    <SidebarMenuItem className="transition-all duration-100
+              [box-shadow:5px_5px_rgb(82_82_82)]
+              hover:translate-x-[3px] hover:translate-y-[3px]
+              hover:[box-shadow:0px_0px_rgb(82_82_82)]" key={item.title}>
                       {renderMenuItem(item)}
-                    </SidebarMenuItem>
+                    </SidebarMenuItem >
                   ))}
                 </SidebarMenu>
               </SidebarGroupContent>

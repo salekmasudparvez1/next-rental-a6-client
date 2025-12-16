@@ -39,7 +39,14 @@ export default function RootLayout({
         <Providers>
           <SettingsProvider locale="en">
             <SidebarProvider>
-              <Toaster />
+              <Toaster
+                toastOptions={{
+                  style: {
+                    boxShadow: "3px 3px 3px rgb(82 82 82)",
+                    fontWeight:800
+                  },
+                }}
+              />
               {children}
             </SidebarProvider>
           </SettingsProvider>

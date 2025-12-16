@@ -106,9 +106,9 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen min-w-screen  bg-transparent">
-      <Card className="w-full  max-w-md shadow-md">
-        <CardHeader>
+    <div className="flex justify-center items-center min-h-screen overflow-y-auto min-w-screen  bg-transparent">
+      <Card className="w-full max-w-sm group relative flex items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-3 font-medium text-neutral-600 transition-all duration-100 [box-shadow:3px_3px_3px_rgb(82_82_82)]">
+        <CardHeader className="w-full">
           <CardTitle className="text-2xl text-center">Create an Account</CardTitle>
           <CardDescription className="text-center">
             Please enter your details to register.

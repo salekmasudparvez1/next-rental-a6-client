@@ -86,7 +86,7 @@ const ImageHandler = ({setFileData}: {setFileData: React.Dispatch<React.SetState
             
             {/* Upload button */}
             {(!items || items.length < 4) && (
-                <div className="relative h-24 w-28 border-dashed border-2 border-gray-300 rounded-md overflow-hidden flex-shrink-0">
+                <div className="transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)] relative h-24 w-28  border-2 border-gray-300 rounded-md overflow-hidden ">
                     <input
                         type="file"
                         accept="image/*"

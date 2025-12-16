@@ -45,82 +45,82 @@ export default function HeroSection() {
   ];
 
   return (
-    <div className="w-full pb-20">
+    <div className="w-full pb-8 xs:pb-10 sm:pb-16 md:pb-20">
 
       {/* 🔥 HERO SECTION */}
-      <section className="h-[60vh] w-full flex flex-col items-center justify-center text-center px-4 bg-radial from-red-400 to-reed-700 text-white">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
+      <section className="min-h-[50vh] xs:min-h-[55vh] sm:min-h-[60vh] w-full flex flex-col items-center justify-center text-center px-3 xs:px-4 sm:px-6 py-8 xs:py-10 sm:py-12 bg-gradient-to-br from-red-400 to-red-700 text-white">
+        <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 xs:mb-4 sm:mb-5 leading-tight">
           Find Your Perfect Rental House Today!
         </h1>
 
-        <p className="text-lg md:text-xl opacity-90 mb-6">
+        <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl opacity-90 mb-4 xs:mb-5 sm:mb-6 max-w-2xl px-2">
           Search by location, budget, and bedrooms — Get the right home instantly.
         </p>
 
-        <Button asChild size="lg" className="bg-white text-red-700 font-semibold hover:bg-gray-100">
+        <Button asChild size="sm" className="bg-white text-red-700 font-semibold hover:bg-gray-100 text-xs xs:text-sm sm:text-base px-4 xs:px-5 sm:px-6 h-8 xs:h-9 sm:h-10 md:h-11">
           <Link href="/post-rental">Post Rental House Info</Link>
         </Button>
       </section>
 
       {/* 🔎 SEARCH FILTER SECTION */}
-      <div className="max-w-5xl mx-auto bg-white shadow-lg -mt-10 rounded-xl p-5 grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="max-w-5xl mx-auto bg-white shadow-lg -mt-6 xs:-mt-8 sm:-mt-10 rounded-lg xs:rounded-xl px-3 xs:px-4 sm:px-5 py-3 xs:py-4 sm:py-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 xs:gap-3 sm:gap-4">
 
         <Input
-          placeholder="Search by Location"
-          className="border border-gray-300"
+          placeholder="Location"
+          className="border border-gray-300 h-8 xs:h-9 sm:h-10 text-xs xs:text-sm"
           onChange={(e) => setFilters({ ...filters, location: e.target.value })}
         />
 
         <Select onValueChange={(v) => setFilters({ ...filters, price: v })}>
-          <SelectTrigger>
+          <SelectTrigger className="h-8 xs:h-9 sm:h-10 text-xs xs:text-sm">
             <SelectValue placeholder="Price Range" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="10000-20000">10k - 20k</SelectItem>
-            <SelectItem value="20000-30000">20k - 30k</SelectItem>
-            <SelectItem value="30000+">30k+</SelectItem>
+            <SelectItem value="10000-20000" className="text-xs xs:text-sm">10k - 20k</SelectItem>
+            <SelectItem value="20000-30000" className="text-xs xs:text-sm">20k - 30k</SelectItem>
+            <SelectItem value="30000+" className="text-xs xs:text-sm">30k+</SelectItem>
           </SelectContent>
         </Select>
 
         <Select onValueChange={(v) => setFilters({ ...filters, bedrooms: v })}>
-          <SelectTrigger>
+          <SelectTrigger className="h-8 xs:h-9 sm:h-10 text-xs xs:text-sm">
             <SelectValue placeholder="Bedrooms" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="1">1 Bedroom</SelectItem>
-            <SelectItem value="2">2 Bedrooms</SelectItem>
-            <SelectItem value="3">3 Bedrooms</SelectItem>
+            <SelectItem value="1" className="text-xs xs:text-sm">1 Bedroom</SelectItem>
+            <SelectItem value="2" className="text-xs xs:text-sm">2 Bedrooms</SelectItem>
+            <SelectItem value="3" className="text-xs xs:text-sm">3 Bedrooms</SelectItem>
           </SelectContent>
         </Select>
 
-        <Button className="w-full bg-red-600 hover:bg-red-700">
+        <Button className="w-full bg-red-600 hover:bg-red-700 h-8 xs:h-9 sm:h-10 text-xs xs:text-sm sm:text-base">
           Search
         </Button>
       </div>
 
       {/* 🏠 RENTAL CARDS LIST */}
-      <div className="max-w-6xl mx-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="max-w-6xl mx-auto mt-6 xs:mt-8 sm:mt-10 px-3 xs:px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 md:gap-6">
         {rentals.map((house) => (
-          <Card key={house.id} className="shadow-md">
+          <Card key={house.id} className="shadow-md overflow-hidden">
             <Image
               src={house.image}
               width={400} height={250}
               alt={house.location}
-              className="rounded-t-xl h-48 w-full object-cover"
+              className="rounded-t-lg xs:rounded-t-xl h-32 xs:h-40 sm:h-48 w-full object-cover"
             />
 
-            <CardHeader>
-              <CardTitle className="text-lg">{house.location}</CardTitle>
+            <CardHeader className="p-3 xs:p-4 sm:p-6">
+              <CardTitle className="text-sm xs:text-base sm:text-lg leading-tight">{house.location}</CardTitle>
             </CardHeader>
 
-            <CardContent>
-              <p className="text-gray-600">{house.desc}</p>
-              <p className="font-semibold mt-2">Rent: {house.price}</p>
-              <p className="font-medium">Bedrooms: {house.bedrooms}</p>
+            <CardContent className="p-3 xs:p-4 sm:p-6 pt-0">
+              <p className="text-gray-600 text-xs xs:text-sm leading-snug">{house.desc}</p>
+              <p className="font-semibold mt-2 text-xs xs:text-sm sm:text-base">Rent: {house.price}</p>
+              <p className="font-medium text-xs xs:text-sm">Bedrooms: {house.bedrooms}</p>
             </CardContent>
 
-            <CardFooter>
-              <Button asChild className="w-full">
+            <CardFooter className="p-3 xs:p-4 sm:p-6 pt-0">
+              <Button asChild className="w-full h-8 xs:h-9 sm:h-10 text-xs xs:text-sm">
                 <Link href={`/rentals/${house.id}`}>View Details</Link>
               </Button>
             </CardFooter>

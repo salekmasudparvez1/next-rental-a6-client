@@ -27,35 +27,35 @@ export default function LoginPage() {
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const { register, handleSubmit, formState: { errors,isSubmitting }, watch ,setValue} = useForm<LoginData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, watch, setValue } = useForm<LoginData>({
         mode: "onChange",
     })
-    const { setIsLoading,isLoading } = useUser();
+    const { setIsLoading, isLoading } = useUser();
     const router = useRouter();
     const redirect = useSearchParams().get("redirectPath");
     // eslint-disable-next-line react-hooks/incompatible-library
     const formValues = watch();
-     //loading context
-   
+    //loading context
 
-      // Load saved form data from localStorage on mount
-      useEffect(() => {
+
+    // Load saved form data from localStorage on mount
+    useEffect(() => {
         const saved = localStorage.getItem("registerForm");
         if (saved) {
-          const parsed = JSON.parse(saved);
-          Object.keys(parsed).forEach((key) => setValue(key as keyof LoginData, parsed[key]));
+            const parsed = JSON.parse(saved);
+            Object.keys(parsed).forEach((key) => setValue(key as keyof LoginData, parsed[key]));
         }
         setIsLoading(true);
-      }, [setIsLoading, setValue]);
-    
-      // Save form data to localStorage whenever form changes, except passwords
-      useEffect(() => {
+    }, [setIsLoading, setValue]);
+
+    // Save form data to localStorage whenever form changes, except passwords
+    useEffect(() => {
         if (isLoading) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { password, ...rest } = formValues;
-          localStorage.setItem("loginForm", JSON.stringify(rest));
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { password, ...rest } = formValues;
+            localStorage.setItem("loginForm", JSON.stringify(rest));
         }
-      }, [formValues, isLoading]);
+    }, [formValues, isLoading]);
 
     const onSubmit = async (data: LoginData) => {
         try {
@@ -75,11 +75,11 @@ export default function LoginPage() {
             return error instanceof Error ? error : new Error(String(error))
         }
     }
-     
+
 
     return (
-        <Card className="w-full max-w-sm">
-            <CardHeader>
+        <Card className="w-full max-w-sm group relative ">
+            <CardHeader className="w-full " >
                 <CardTitle className="text-2xl text-center">Welcome Back</CardTitle>
                 <CardDescription className="text-center">
                     Login using email or username
@@ -138,10 +138,10 @@ export default function LoginPage() {
                         )}
                     </div>
 
-                    <Button type="submit" className="w-full mt-2" disabled={isSubmitting}>
-                       { isSubmitting && <Spinner/>}
+                    <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting && <Spinner />}
                         {isSubmitting ? "Logging in..." : "Login"}
-                        </Button>
+                    </Button>
                 </form>
             </CardContent>
 

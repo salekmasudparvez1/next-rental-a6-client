@@ -72,7 +72,7 @@ export function CommandMenu({ buttonClassName, ...props }: CommandMenuProps) {
     // If the item has nested items, render it with a collapsible dropdown.
     if (item.items) {
       return (
-        <Collapsible key={item.title} className="group/collapsible">
+        <Collapsible key={item.title} className="group/collapsible ">
           <CommandItem asChild>
             <CollapsibleTrigger className="w-full flex justify-between items-center gap-2 px-2 py-1.5 [&[data-state=open]>svg]:rotate-180">
               <span className="flex items-center gap-2">
@@ -137,8 +137,8 @@ export function CommandMenu({ buttonClassName, ...props }: CommandMenuProps) {
         <span>Search...</span>
         <Keyboard className="ms-auto">K</Keyboard>
       </Button>
-      <CommandDialog open={open} onOpenChange={setOpen} {...props}>
-        <DialogTitle className="sr-only">Search Menu</DialogTitle>
+      <CommandDialog  open={open} onOpenChange={setOpen} {...props}>
+        <DialogTitle className="sr-only ">Search Menu</DialogTitle>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>

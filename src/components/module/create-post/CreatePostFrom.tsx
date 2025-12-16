@@ -204,8 +204,8 @@ const CreatePostFrom = () => {
 
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-5xl mx-auto p-4 md:p-6'>
-            <Card className='shadow-lg'>
+        <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-5xl mx-auto p-4 md:p-6 '>
+            <Card className='shadow-lg '>
 
                 <CardContent className='pt-2'>
                     <div className="space-y-8">
@@ -236,7 +236,7 @@ const CreatePostFrom = () => {
                                     id="description"
                                     placeholder="Describe your property in detail..."
                                     rows={5}
-                                    className="w-full px-3 py-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full transition-all duration-100 [box-shadow:2px_2px_rgb(82_82_82)] px-3 py-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     {...register("description")}
                                     onChange={(e) => updateFormData({ "description": e.target.value })}
                                 />

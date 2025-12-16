@@ -35,7 +35,7 @@ const PostDetailsPage = () => {
     const id = useParams().details;
     const router = useRouter();
     const [loading, setLoading] = useState(true);
-    
+
     const {
         register,
         handleSubmit,
@@ -84,7 +84,7 @@ const PostDetailsPage = () => {
                     const postData = result.data;
                     setFormData(postData);
                     setFeatures(postData?.features || []);
-                    
+
                     // Set location if exists
                     if (postData?.location?.map?.lat && postData?.location?.map?.lng) {
                         setLocation({
@@ -92,7 +92,7 @@ const PostDetailsPage = () => {
                             lng: postData.location.map.lng
                         });
                     }
-                    
+
                     // Reset form with fetched data
                     reset({
                         status: postData?.status || "available",
@@ -121,7 +121,7 @@ const PostDetailsPage = () => {
             }
         }
         fetchDataPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     const status = watch("status");
@@ -231,36 +231,45 @@ const PostDetailsPage = () => {
     const onSubmit = async (data: RentalHouseFormData) => {
 
         try {
+            // Ensure status is included in the data
+            const submitData = {
+                ...data,
+                status: status || data.status,
+                features: features
+            };
+
+            console.log("Submitting data with status:", submitData.status);
+
             // upload to db process
             const formDataForDb = new FormData();
 
-            formDataForDb.append('data', JSON.stringify(data));
+            formDataForDb.append('data', JSON.stringify(submitData));
 
             if (fileData.length) {
                 fileData.forEach((file) => {
                     formDataForDb.append('images', file)
                 })
             }
-            
+
             const res = await updatePost(formDataForDb, id as string);
 
             if (res.success) {
-                toast.success(`Rental post created successfully named ${res?.data?.title}` ||
-                    " Rental post created successfully"
+                toast.success(`Rental post updated successfully named ${res?.data?.title}` ||
+                    " Rental post updated successfully"
                 )
             }
             clearForm()
             router.push("/landlord/view-posts")
 
         } catch (error) {
-            toast.error((error as Error)?.message || "Failed to create rental house");
+            toast.error((error as Error)?.message || "Failed to update rental house");
         }
     };
 
 
-   if(!id || loading ){
-    return <PropertyFormSkeleton/>
-   }
+    if (!id || loading) {
+        return <PropertyFormSkeleton />
+    }
     return (
         <div>
 
@@ -470,7 +479,10 @@ const PostDetailsPage = () => {
                                         <Label htmlFor="status" className="font-medium">Status *</Label>
                                         <Select
                                             value={status}
-                                            onValueChange={(value) => setValue("status", value as "available" | "rented" | "maintenance")}
+                                            onValueChange={(value) => {
+                                                setValue("status", value as "available" | "rented" | "maintenance", { shouldValidate: true });
+                                                updateFormData({ status: value as "available" | "rented" | "maintenance" });
+                                            }}
                                         >
                                             <SelectTrigger className="h-10">
                                                 <SelectValue placeholder="Select status" />

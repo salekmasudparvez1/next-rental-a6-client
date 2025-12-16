@@ -8,9 +8,9 @@ export function VerticalLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Sidebar />
-      <div className="w-full">
+      <div className="w-full min-h-screen h-full flex flex-col justify-between items-between ">
         <VerticalLayoutHeader />
-        <main className="h-[calc(100svh-6.82rem)] overflow-y-auto bg-muted/40">
+        <main  className="z-0 overflow-y-auto bg-muted/40">
           {children}
         </main>
         <Footer />

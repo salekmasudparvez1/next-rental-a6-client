@@ -18,7 +18,7 @@ export default function ErrorState({
   onRetry,
 }: ErrorStateProps) {
   return (
-    <div className="flex min-h-[60vh] items-center justify-center p-4">
+    <div className="flex min-h-screen w-full shadow-md border-none shadow-black items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardContent className="pt-8 text-center space-y-4">
           <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
@@ -30,7 +30,7 @@ export default function ErrorState({
           </p>
 
           {process.env.NODE_ENV === "development" && error?.message && (
-            <pre className="text-xs bg-muted p-3 rounded text-left overflow-auto">
+            <pre className="text-xs text-center bg-muted p-3 rounded overflow-auto">
               {error.message}
             </pre>
           )}

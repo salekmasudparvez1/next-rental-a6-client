@@ -38,7 +38,7 @@ export function Avator() {
 
 
     return (
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="p-0 rounded-full">
                     <Avatar>

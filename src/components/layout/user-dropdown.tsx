@@ -66,7 +66,7 @@ export function UserDropdown() {
   const { photoURL, username, email } = profile || {}
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-lg">
           <Avatar className="size-9">
@@ -78,7 +78,7 @@ export function UserDropdown() {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" forceMount>
+      <DropdownMenuContent align="end" className="w-52" forceMount>
         <DropdownMenuLabel className="flex gap-2">
           <Avatar>
             <AvatarImage src={photoURL} alt={username} />

@@ -275,4 +275,3 @@ const AllUsersPage = () => {
 }
 
 export default AllUsersPage;
-
