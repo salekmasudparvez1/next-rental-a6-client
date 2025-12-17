@@ -87,6 +87,7 @@ export default function RegisterPage() {
   }, [formValues, isLoaded]);
 
   const onSubmit = async (data: RegisterData) => {
+    console.log(data);
     try {
       const res = await RegisterUser(data);
        setIsLoading(true);

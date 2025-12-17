@@ -11,11 +11,12 @@ html {
   @apply overflow-x-hidden;
 }
 
-
+.form-container {
+  position: relative; /* important for popper to calculate position */
+}
 
 body {
   font-family: var(--font-fira), sans-serif;
-  @apply !min-w-full;
   margin: 0;
   padding: 0;
 }
@@ -28,7 +29,7 @@ body {
 }
 
 form {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
   /* optional */
   overflow-anchor: none;
   /* prevents scroll jump */

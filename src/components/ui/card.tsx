@@ -22,7 +22,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
       className={`${cn(
         "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] py-2 [.border-b]:pb-6",
         className
-      )}transition-all duration-100 [box-shadow:2px_2px_rgb(82_82_82)]`}
+      )}transition-all w-full duration-300 [box-shadow:0px_2px_rgb(82_82_82)]`}
       {...props}
     />
   )

@@ -17,16 +17,17 @@ export const RegisterUser = async (userData: FieldValues) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            credentials: "include",
             body: JSON.stringify(data)
         })
         const result = await res.json();
+        console.log(result);
         if (result.success) {
             (await cookies()).set("accessToken", result.data.accessToken);
             (await cookies()).set("refreshToken", result?.data?.refreshToken);
         }
         return result
     } catch (error: unknown) {
+      console.log(error);
         return error instanceof Error ? error : new Error(String(error))
     }
 }
@@ -43,7 +44,7 @@ export const loginUser = async (userData: FieldValues) => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      
       body: JSON.stringify(data),
     });
 

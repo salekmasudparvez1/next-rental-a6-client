@@ -1,11 +1,10 @@
 "use client"
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import toast from 'react-hot-toast';
 import { Card, CardContent } from '@/components/ui/card';
 import { RentalHouseCreateZodSchema } from './post.validation';
@@ -87,8 +86,8 @@ const CreatePostFrom = () => {
     }, []);
     // update features
     useEffect(() => {
-         updateFeatures(features)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        updateFeatures(features)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [features]);
 
     useEffect(() => {
@@ -122,7 +121,7 @@ const CreatePostFrom = () => {
                     const selectedDistrict = selectedDivision.districts.find(
                         (d: TDistrict) => d.name === (firstDistrict !== district ? firstDistrict : district)
                     );
-                    
+
                     if (selectedDistrict && selectedDistrict.upazilas) {
                         const subdistrictOpts = selectedDistrict.upazilas.map((subdistrict: TUpazila | string) => {
                             // Handle both string and object formats
@@ -142,7 +141,7 @@ const CreatePostFrom = () => {
                 }
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [divisionData, division, district]);
 
     const addFeature = () => {
@@ -186,7 +185,7 @@ const CreatePostFrom = () => {
                     formDataForDb.append('images', file)
                 })
             }
-          
+
             const res = await createPost(formDataForDb)
 
             if (res.success) {
@@ -260,7 +259,7 @@ const CreatePostFrom = () => {
                                         options={divisionOptions}
                                         value={watch("location.division")}
                                         onChange={(val) => setValue("location.division", val, { shouldValidate: true })}
-                                        
+
                                         placeholder="Select division"
                                         error={errors.location?.division?.message}
                                     />
@@ -399,7 +398,7 @@ const CreatePostFrom = () => {
                                         max="20"
                                         placeholder="e.g., 2"
                                         {...register("bedroomNumber", { valueAsNumber: true })}
-                                        className="h-10"
+                                        className="h-10 "
                                     />
                                     {errors.bedroomNumber && (
                                         <p className="text-xs text-red-500">{errors.bedroomNumber.message}</p>
@@ -407,37 +406,37 @@ const CreatePostFrom = () => {
                                 </div>
 
                                 {/* Status */}
-                                <div className="space-y-2">
-                                    <Label htmlFor="status" className="font-medium">Status *</Label>
-                                    <Select
+                                <div className="space-y-2 relative">
+                                    <Label htmlFor="status" className="font-medium block">
+                                        Status *
+                                    </Label>
+                                    <select
+                                        id="status"
+                                        {...register("status", { required: "Status is required" })}
+                                        className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 h-8 focus:ring-blue-500 transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)]"
                                         value={status}
-                                        
-                                        
-                                        onValueChange={(value) => {
-                                            setValue("status", value as "available" | "rented" | "maintenance", { shouldValidate: true });
-                                            updateFormData({ status: value as "available" | "rented" | "maintenance" });
-                                        }}
+                                        onChange={(e) => setValue("status", e.target.value as RentalHouseFormData["status"])}
                                     >
-                                        <SelectTrigger className="h-10" type="button">
-                                            <SelectValue placeholder="Select status" />
-                                        </SelectTrigger>
-                                        <SelectContent avoidCollisions={true} className='overflow-auto'>
-                                            <SelectItem value="available">Available</SelectItem>
-                                            <SelectItem value="rented">Rented</SelectItem>
-                                            <SelectItem value="maintenance">Maintenance</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                        <option className='transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)]' value="available">Available</option>
+                                        <option className='transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)]' value="rented">Rented</option>
+                                        <option className='transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)]' value="maintenance">Maintenance</option>
+                                    </select>
                                     {errors.status && (
                                         <p className="text-xs text-red-500">{errors.status.message}</p>
                                     )}
+
                                 </div>
+
+
+
+
                             </div>
                         </div>
 
                         {/* SECTION 4: Features */}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">Property Features</h3>
-                            
+
                             {/* Add Feature */}
                             <div className="flex gap-2 items-end">
                                 <div className="flex-1 space-y-2">

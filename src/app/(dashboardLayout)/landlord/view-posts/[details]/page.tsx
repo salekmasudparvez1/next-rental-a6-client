@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import toast from 'react-hot-toast';
 import { Card, CardContent } from '@/components/ui/card';
 import { RentalHouseCreateZodSchema } from '@/components/module/create-post/post.validation';
@@ -115,7 +114,7 @@ const PostDetailsPage = () => {
                     });
                 }
             } catch (error) {
-                toast.error("Failed to load post data");
+                toast.error((error as Error)?.message || "Failed to load post data");
             } finally {
                 setLoading(false);
             }
@@ -475,27 +474,29 @@ const PostDetailsPage = () => {
                                     </div>
 
                                     {/* Status */}
-                                    <div className="space-y-2">
-                                        <Label htmlFor="status" className="font-medium">Status *</Label>
-                                        <Select
+                                    
+                                    <div className="space-y-2 relative">
+                                        <Label htmlFor="status" className="font-medium block">
+                                            Status *
+                                        </Label>
+                                        <select
+                                            id="status"
+                                            {...register("status", { required: "Status is required" })}
+                                            className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 h-8 focus:ring-blue-500 transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)]"
                                             value={status}
-                                            onValueChange={(value) => {
-                                                setValue("status", value as "available" | "rented" | "maintenance", { shouldValidate: true });
-                                                updateFormData({ status: value as "available" | "rented" | "maintenance" });
+                                             onChange={(e) => {
+                                                setValue("status", e.target.value as "available" | "rented" | "maintenance", { shouldValidate: true });
+                                                updateFormData({ status: e.target.value as "available" | "rented" | "maintenance" });
                                             }}
                                         >
-                                            <SelectTrigger className="h-10" type="button">
-                                                <SelectValue placeholder="Select status" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="available">Available</SelectItem>
-                                                <SelectItem value="rented">Rented</SelectItem>
-                                                <SelectItem value="maintenance">Maintenance</SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                            <option className='transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)]' value="available">Available</option>
+                                            <option className='transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)]' value="rented">Rented</option>
+                                            <option className='transition-all duration-100 [box-shadow:2px_4px_rgb(82_82_82)]' value="maintenance">Maintenance</option>
+                                        </select>
                                         {errors.status && (
                                             <p className="text-xs text-red-500">{errors.status.message}</p>
                                         )}
+
                                     </div>
                                 </div>
                             </div>
