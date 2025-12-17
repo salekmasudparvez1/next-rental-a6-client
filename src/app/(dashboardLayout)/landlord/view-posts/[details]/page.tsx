@@ -484,7 +484,7 @@ const PostDetailsPage = () => {
                                                 updateFormData({ status: value as "available" | "rented" | "maintenance" });
                                             }}
                                         >
-                                            <SelectTrigger className="h-10">
+                                            <SelectTrigger className="h-10" type="button">
                                                 <SelectValue placeholder="Select status" />
                                             </SelectTrigger>
                                             <SelectContent>

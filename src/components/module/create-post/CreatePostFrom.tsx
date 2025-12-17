@@ -173,6 +173,7 @@ const CreatePostFrom = () => {
     };
 
     const onSubmit = async (data: RentalHouseFormData) => {
+        console.log('click');
 
         try {
             // upload to db process
@@ -410,12 +411,17 @@ const CreatePostFrom = () => {
                                     <Label htmlFor="status" className="font-medium">Status *</Label>
                                     <Select
                                         value={status}
-                                        onValueChange={(value) => setValue("status", value as "available" | "rented" | "maintenance")}
+                                        
+                                        
+                                        onValueChange={(value) => {
+                                            setValue("status", value as "available" | "rented" | "maintenance", { shouldValidate: true });
+                                            updateFormData({ status: value as "available" | "rented" | "maintenance" });
+                                        }}
                                     >
-                                        <SelectTrigger className="h-10">
+                                        <SelectTrigger className="h-10" type="button">
                                             <SelectValue placeholder="Select status" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent avoidCollisions={true} className='overflow-auto'>
                                             <SelectItem value="available">Available</SelectItem>
                                             <SelectItem value="rented">Rented</SelectItem>
                                             <SelectItem value="maintenance">Maintenance</SelectItem>

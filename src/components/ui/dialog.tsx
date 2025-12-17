@@ -118,10 +118,7 @@ export function DialogTitle({
       className={`${cn(
         "text-lg font-semibold leading-none tracking-tight",
         className
-      )} transition-all duration-100
-              [box-shadow:5px_5px_rgb(82_82_82)]
-              hover:translate-x-[3px] hover:translate-y-[3px]
-              hover:[box-shadow:0px_0px_rgb(82_82_82)]`}
+      )} `}
       {...props}
     />
   )

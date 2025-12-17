@@ -4,6 +4,36 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/*====================*/
+/* Global Styles */
+/*====================*/
+html {
+  @apply overflow-x-hidden;
+}
+
+
+
+body {
+  font-family: var(--font-fira), sans-serif;
+  @apply !min-w-full;
+  margin: 0;
+  padding: 0;
+}
+
+/* Make sure these don't have overflow-hidden */
+html,
+body {
+  height: 100%;
+  /* Remove any overflow-hidden if present */
+}
+
+form {
+  scroll-behavior: smooth;
+  /* optional */
+  overflow-anchor: none;
+  /* prevents scroll jump */
+}
+
 /* ============================ */
 /* Custom Breakpoints for Extreme Responsiveness */
 /* ============================ */
@@ -196,35 +226,7 @@
   animation: slideInLeft 0.3s ease-out;
 }
 
-/* ============================ */
-/* Nav Shadow Styling */
-/* ============================ */
-.nav_shadow {
-  background: linear-gradient(90deg, #faf5f5 0%, #e2c3c3 40%, #e2e2e2 60%, #ffffff 100%);
-  color: #232526;
-  font-weight: 700;
-  border-radius: 1rem;
-  border: 1.5px solid #d1d5db;
-  box-shadow: 0 6px 32px 0 rgba(84, 79, 79, 0.2),
-    0 2px 8px 0 rgba(226, 195, 195, 0.1),
-    inset 0 1px 8px 0 rgba(255, 255, 255, 0.18);
-  padding: 1rem 1.5rem;
-  backdrop-filter: blur(4px) saturate(180%);
-  -webkit-backdrop-filter: blur(4px) saturate(180%);
-  transition: box-shadow 0.3s cubic-bezier(.25, .8, .25, 1),
-    background 0.3s cubic-bezier(.25, .8, .25, 1);
-}
 
-/* ============================ */
-/* nav Background Styling */
-/* ============================ */
-html {
-  @apply overflow-x-hidden;
-}
-
-body {
-  @apply  !min-w-full;
-}
 
 .glass-effect {
   background: linear-gradient(90deg, #faf5f5 0%, #e2c3c3 40%, #e2e2e2 60%, #ffffff 100%);
@@ -237,13 +239,9 @@ body {
   transition: box-shadow 0.3s cubic-bezier(.25, .8, .25, 1),
     background 0.3s cubic-bezier(.25, .8, .25, 1);
 }
-/* Make sure these don't have overflow-hidden */
-html, body {
-  height: 100%;
-  /* Remove any overflow-hidden if present */
-}
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
+
+/* Applied from Chrome DevTools */
+.data-\[size\=default\]\:h-9[data-size="default"] {
+  transform: none;
+  box-shadow: none;
 }

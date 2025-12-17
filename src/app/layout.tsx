@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fira_Sans} from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "@/app/style/globals.css";
 import { SettingsProvider } from "@/contexts/settings-context";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import Providers from "@/providers/Providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const firaSans = Fira_Sans({
+  subsets: ['latin'], 
+  weight: ['400', '500','600', '700','800','900'], 
+  variable: '--font-fira', 
+})
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
 
 export const metadata: Metadata = {
   title: {
@@ -34,7 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`antialiased ${firaSans.variable}  `}
       >
         <Providers>
           <SettingsProvider locale="en">
