@@ -3,53 +3,26 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllPropertiesPublicFunction } from "@/service/post/postService";
 import { RentalHouseFormData } from "@/types/post";
-import { Bed, DollarSign, MapPinIcon } from "lucide-react";
+import { ArrowDown, Bed, DollarSign, Filter, FilterIcon, MapPinIcon, SearchCheck } from "lucide-react";
 import { RentalCardSkeleton } from "@/components/core/data-table/card/RentalCardSkeleton";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { motion } from "framer-motion";
+
 
 export default function HeroSection() {
   const [rentals, setRentals] = useState<Array<RentalHouseFormData>>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const [filters, setFilters] = useState({
-    location: "",
-    price: "",
-    bedrooms: "",
-  });
+  const [openFilter, setOpenFiletr] = useState(false)
 
 
-  // Example Rental Houses (Replace with real DB later)
-  // const rentals = [
-  //   {
-  //     id: 1,
-  //     image: "/house1.jpg",
-  //     location: "Dhanmondi, Dhaka",
-  //     price: "৳20,000/month",
-  //     bedrooms: "2",
-  //     desc: "Family-friendly apartment close to schools & markets."
-  //   },
-  //   {
-  //     id: 2,
-  //     image: "/house2.jpg",
-  //     location: "Mirpur 10, Dhaka",
-  //     price: "৳15,500/month",
-  //     bedrooms: "1",
-  //     desc: "Affordable home with nearby transport & shopping malls."
-  //   },
-  //   {
-  //     id: 3,
-  //     image: "/house3.jpg",
-  //     location: "Uttara Sector 4, Dhaka",
-  //     price: "৳28,000/month",
-  //     bedrooms: "3",
-  //     desc: "Luxury flat with spacious rooms and secure parking."
-  //   }
-  // ];
+
+
+
   useEffect(() => {
     const getFilteredRentals = async () => {
       const res = await getAllPropertiesPublicFunction()
@@ -63,61 +36,113 @@ export default function HeroSection() {
     <div className="w-full pb-8 xs:pb-10 sm:pb-16 md:pb-20">
 
       {/* 🔥 HERO SECTION */}
-      <section className="min-h-[50vh] xs:min-h-[55vh] sm:min-h-[60vh] w-full flex flex-col items-center justify-center text-center px-3 xs:px-4 sm:px-6 py-8 xs:py-10 sm:py-12 bg-linear-to from-red-400 to-red-700 text-white">
-        <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 xs:mb-4 sm:mb-5 leading-tight">
+      <section className="mt-4 font-medium transition-all duration-300
+              [box-shadow:5px_5px_rgb(82_82_82)] border border-gray-500 rounded-3xl min-h-[50vh] xs:min-h-[55vh] sm:min-h-[60vh] w-full flex flex-col items-center justify-center text-center px-3 xs:px-4 sm:px-6 py-8 xs:py-10 sm:py-12 bg-linear-to from-red-400 to-red-700 text-white" >
+        <h1 className="text-xl xs:text-2xl sm:text-3xl [box-shadow:5px_5px_rgb(82_82_82)] bg-red-500 md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 xs:mb-4 sm:mb-5 leading-tight" >
           Find Your Perfect Rental House Today!
         </h1>
 
-        <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl opacity-90 mb-4 xs:mb-5 sm:mb-6 max-w-2xl px-2">
+        <p className="text-xs text-gray-400 font-light xs:text-sm sm:text-base md:text-lg lg:text-xl opacity-90 mb-4 xs:mb-5 sm:mb-6 max-w-2xl px-2">
           Search by location, budget, and bedrooms — Get the right home instantly.
         </p>
 
-        <Button asChild size="sm" className="bg-white text-red-700 font-semibold hover:bg-gray-100 text-xs xs:text-sm sm:text-base px-4 xs:px-5 sm:px-6 h-8 xs:h-9 sm:h-10 md:h-11">
+        <Button asChild size="sm" className="bg-white border text-red-700 font-semibold hover:bg-gray-100 text-xs xs:text-sm sm:text-base px-4 xs:px-5 sm:px-6 h-8 xs:h-9 sm:h-10 md:h-11">
           <Link href="/post-rental">Post Rental House Info</Link>
         </Button>
       </section>
 
       {/* 🔎 SEARCH FILTER SECTION */}
-      <div className="max-w-5xl mx-auto transition-all w-full duration-300 [box-shadow:0px_2px_rgb(82_82_82)] border bg-white shadow-lg -mt-6 xs:-mt-8 sm:-mt-10 rounded-lg xs:rounded-xl px-3 xs:px-4 sm:px-5 py-3 xs:py-4 sm:py-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 xs:gap-3 sm:gap-4">
+      <div
 
-        <Input
-          placeholder="Location"
-          className="border border-gray-300 h-8 xs:h-9 sm:h-10 text-xs xs:text-sm"
-          onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-        />
+        className="w-[90%] max-w-5xl mx-auto rounded-2xl   border bg-white shadow-lg -mt-6 xs:-mt-8 sm:-mt-10 overflow-hidden xs:rounded-xl px-3 xs:px-4 sm:px-5 py-3 xs:py-4 sm:py-5 flex justify-center items-end gap-2 xs:gap-3 sm:gap-4 flex-col [box-shadow:3px_5px_rgb(82_82_82)]">
 
-        <Select onValueChange={(v) => setFilters({ ...filters, price: v })}>
-          <SelectTrigger className="h-8 xs:h-9 sm:h-10 text-xs xs:text-sm gg" >
-            <SelectValue placeholder="Price Range" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="10000-20000" className="text-xs xs:text-sm">10k - 20k</SelectItem>
-            <SelectItem value="20000-30000" className="text-xs xs:text-sm">20k - 30k</SelectItem>
-            <SelectItem value="30000-40000" className="text-xs xs:text-sm">30k - 40k</SelectItem>
-          </SelectContent>
-        </Select>
 
-        <Select onValueChange={(v) => setFilters({ ...filters, bedrooms: v })}>
-          <SelectTrigger className="h-8 xs:h-9 sm:h-10 text-xs xs:text-sm">
-            <SelectValue placeholder="Bedrooms" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1" className="text-xs xs:text-sm">1 Bedroom</SelectItem>
-            <SelectItem value="2" className="text-xs xs:text-sm">2 Bedrooms</SelectItem>
-            <SelectItem value="3" className="text-xs xs:text-sm">3 Bedrooms</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Button className="w-full bg-red-600 hover:bg-red-700 h-8 xs:h-9 sm:h-10 text-xs xs:text-sm sm:text-base">
-          Search
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setOpenFiletr(!openFilter)}
+          className=" text-sm font-medium"
+        >
+          <Filter className="size-4" />
+          <span>Filter</span>
+          <ArrowDown className="size-4" />
         </Button>
+        {/* ============filter all fields part  ==========*/}
+        <motion.div
+        initial={{ height: 0, opacity: 0 }}
+          animate={{
+            height: openFilter ? "auto" : 0,
+            opacity: openFilter ? 1 : 0
+          }}
+          style={{ transformOrigin: "top" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="w-full space-y-2 overflow-hidden">
+          <div className=" grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3 justify-between">
+            {/* location */}
+            <div className="gap-3 w-full flex flex-col justify-start items-center bg-gray-100 px-2 py-3 rounded-2xl" >
+              <div className="text-sm font-light text-left text-gray-500 rounded-full border px-2">Select Location</div>
+              <NativeSelect className="w-48 bg-white">
+                <NativeSelectOption value="">Select Division</NativeSelectOption>
+                <NativeSelectOption value="dhaka">Dhaka</NativeSelectOption>
+              </NativeSelect>
+
+              <NativeSelect className="w-48 bg-white">
+                <NativeSelectOption value="">Select District</NativeSelectOption>
+                <NativeSelectOption value="dhaka">Dhaka</NativeSelectOption>
+              </NativeSelect>
+
+              <NativeSelect className="w-48 bg-white">
+                <NativeSelectOption value="">Select Upozela</NativeSelectOption>
+                <NativeSelectOption value="dhaka">Dhaka</NativeSelectOption>
+              </NativeSelect>
+            </div>
+
+
+
+            {/* price */}
+            <div className="gap-3 w-full flex flex-col justify-start items-center bg-gray-100 px-2 py-3 rounded-2xl ">
+              <div className="text-sm font-light text-left text-gray-500 rounded-full border px-2">Select price range</div>
+              <Input className="w-48 bg-white text-black dark:bg-white " type="number" placeholder="Enter min price" />
+              <Input className="w-48 bg-white text-black dark:bg-white" type="number" placeholder="Enter max price" />
+            </div>
+
+
+            {/* bedroom */}
+            <div className="gap-3 w-full flex flex-col justify-start items-center bg-gray-100 px-2 py-3 rounded-2xl" >
+              <div className="text-sm font-light text-left text-gray-500 rounded-full border px-2">Select Bedroomnumber</div>
+              <Input
+                className="w-48 bg-white text-black dark:bg-white"
+                type="number"
+                placeholder="Enter number of Bedroom"
+              />
+            </div>
+
+          </div>
+
+          <div className="flex justify-end gap-2 w-full p-3">
+            <Button className="w-20" variant="outline">
+              <FilterIcon />
+              cancel
+            </Button>
+            <Button className="w-20" variant="destructive">
+              <SearchCheck />
+              Done
+            </Button>
+
+
+          </div>
+        </motion.div>
+
+
+
+
       </div>
 
       {/*  RENTAL CARDS LIST */}
       <div className="max-w-6xl mx-auto mt-6 xs:mt-8 sm:mt-10 px-3 xs:px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 md:gap-6">
         {loading ? (<>
-         { [1,2,3,4,5,6].map((index) => <RentalCardSkeleton key={index} />)}
-          </>
+          {[1, 2, 3, 4, 5, 6].map((index) => <RentalCardSkeleton key={index} />)}
+        </>
         ) : rentals?.slice(0, 6).map((house) => (
           <Card
             key={house?._id}

@@ -52,7 +52,7 @@ function Button({
     <Comp
       data-slot="button"
       className={`${cn(buttonVariants({ variant, size, className }))} font-medium  transition-all duration-100
-              [box-shadow:5px_5px_rgb(82_82_82)]
+              [box-shadow:3px_3px_rgb(82_82_82)]
               hover:translate-x-[3px] hover:translate-y-[3px]
               hover:[box-shadow:0px_0px_rgb(82_82_82)]`}
       {...props}
