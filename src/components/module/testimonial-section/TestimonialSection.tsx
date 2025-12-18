@@ -131,7 +131,7 @@ export function TestimonialSection() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <div className="flex justify-center gap-4 mt-4 items-center">
+                <div className="md:flex hidden justify-center gap-4 mt-4 items-center ">
                     <CarouselPrevious>
                         <Button
                             variant="ghost"
