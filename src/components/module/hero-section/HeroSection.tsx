@@ -8,16 +8,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllPropertiesPublicFunction } from "@/service/post/postService";
 import { RentalHouseFormData } from "@/types/post";
-import { ArrowDown, Bed, DollarSign, Filter, FilterIcon, MapPinIcon, SearchCheck } from "lucide-react";
+import { ArrowDown, Bed, DollarSign, Eye, Filter, FilterIcon, MapPinIcon, SearchCheck } from "lucide-react";
 import { RentalCardSkeleton } from "@/components/core/data-table/card/RentalCardSkeleton";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 
 export default function HeroSection() {
   const [rentals, setRentals] = useState<Array<RentalHouseFormData>>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [openFilter, setOpenFiletr] = useState(false)
+  const router = useRouter()
 
 
 
@@ -33,7 +35,7 @@ export default function HeroSection() {
   }, [])
 
   return (
-    <div className="w-full pb-8 xs:pb-10 sm:pb-16 md:pb-20">
+    <div className="w-full  border-b border-b-gray-400 border-dashed">
 
       {/* 🔥 HERO SECTION */}
       <section className="mt-4 font-medium transition-all duration-300
@@ -61,9 +63,9 @@ export default function HeroSection() {
           variant="outline"
           size="sm"
           onClick={() => setOpenFiletr(!openFilter)}
-          className=" text-sm font-medium"
+          className="text-sm font-medium"
         >
-          <Filter className="size-4" />
+          <Filter className={`size-4 transition-all duration-300 ${openFilter ? "fill-red-500":"fill-none"}`} />
           <span>Filter</span>
           <ArrowDown className="size-4" />
         </Button>
@@ -223,13 +225,18 @@ export default function HeroSection() {
                 asChild
                 className="h-9 w-full rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 group-hover:bg-primary/90"
               >
-                <Link href={`/${house._id}`}>View Details</Link>
+                <Link href={`/view-details-post/${house._id}`}>View Details</Link>
               </Button>
             </CardFooter>
           </Card>
 
 
         ))}
+      </div>
+      <div className="flex justify-center items-center py-6">
+        <Button onClick={()=>router.push('/view')} variant='outline'>
+         <Eye/> View All
+        </Button>
       </div>
     </div>
   );

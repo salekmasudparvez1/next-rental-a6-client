@@ -53,12 +53,14 @@ export const getAllPosts = async (pageIndex?: number, pageSize?: number) => {
     }
 }
 export const getAllPropertiesPublicFunction = async (pageIndex?: number, pageSize?: number,id?: string) => {
+    const token = (await cookies()).get('accessToken')?.value
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (token)headers['Authorization']= `Bearer ${token}`
+
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tenants/get-all?id=${id}&page=${pageIndex}&limit=${pageSize}`, {
             method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers,
             cache: "no-store",
         });
         const result = await res.json();

@@ -21,7 +21,7 @@ export function Navbar() {
   const router = useRouter()
   const navMenus = [
     { name: "Home", path: "/" },
-    { name: "Find Rentals", path: "/rentals" },
+    { name: "Find Rentals", path: "/view" },
     { name: "About Us", path: "/about" },
   ];
   

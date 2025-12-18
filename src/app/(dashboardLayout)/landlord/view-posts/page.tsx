@@ -256,8 +256,8 @@ const ViewPostPage = () => {
                   )}
                   <div className="mt-2 flex flex-wrap items-center gap-2">
                     {/* Status */}
-                    {/* @ts-expect-error variant prop possibly */}
-                    <Badge variant={selectedPost?.status === 'available' ? 'success' : selectedPost?.status === 'rented' ? 'destructive' : selectedPost?.status === 'maintenance' ? 'outline' : 'secondary'}>
+                    
+                    <Badge variant={selectedPost?.status === 'available' ? 'default' : selectedPost?.status === 'rented' ? 'destructive' : selectedPost?.status === 'maintenance' ? 'outline' : 'secondary'}>
                       {selectedPost?.status}
                     </Badge>
 

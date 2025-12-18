@@ -246,3 +246,13 @@ form {
   transform: none;
   box-shadow: none;
 }
+/* for calender shadcn ui */
+.horizontal-calendar .rdp-months {
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .horizontal-calendar .rdp-months {
+    flex-direction: row;
+  }
+}
