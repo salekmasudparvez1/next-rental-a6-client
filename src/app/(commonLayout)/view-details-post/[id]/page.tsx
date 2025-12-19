@@ -1,8 +1,8 @@
 "use client"
 
-import { getAllPropertiesPublicFunction } from "@/service/post/postService";
+import { createRequest, getAllPropertiesPublicFunction, getRequestForTenant, getSingleRequestForTenant } from "@/service/post/postService";
 import { RentalHouseFormData } from "@/types/post";
-import { AlertCircle, AlertTriangle, Bed, BookOpen, CheckCircle, DollarSign, Pin, X, XCircle, ZoomIn } from "lucide-react";
+import { AlertCircle, AlertTriangle, Bed, BookOpen, CheckCircle, DollarSign, Pin, Send, X, XCircle, ZoomIn } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,11 +12,15 @@ import { Badge } from "@/components/ui/badge";
 import { useUser } from "@/contexts/UseerContext";
 import { Calendar } from "@/components/ui/calendar";
 import { DateRange } from "react-day-picker";
+import toast from "react-hot-toast";
+import { Spinner } from "@/components/ui/spinner";
+import { IRequestOfTenant } from "@/types/request";
 
 
 
 const ViewDetailsPage = () => {
     const [loading, setLoading] = useState(true);
+    const [loadingRequest, setLoadingRequest] = useState(false)
     const [data, setData] = useState<RentalHouseFormData>();
     const [openZoomPic, setOpenZoomPic] = useState<{ url: string, open: boolean; }>({ url: '', open: false });
     const [openBookingDialog, setOpenBookingDialog] = useState<{
@@ -26,10 +30,8 @@ const ViewDetailsPage = () => {
         id: "",
         open: false,
     });
-    const [dateRange, setDateRange] = useState<DateRange | undefined>({
-        from: new Date(2025, 5, 12),
-        to: new Date(2025, 6, 15),
-    })
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
+    const [requestData, setRequestData] = useState<IRequestOfTenant>()
 
     const { user } = useUser()
     const router = useRouter()
@@ -51,10 +53,44 @@ const ViewDetailsPage = () => {
 
 
     }, [id])
-    if (loading) {
+
+    const handleSendRequest = async (id: string, date: DateRange | undefined) => {
+        setLoadingRequest(true)
+        if (date === undefined) return toast.error("Please select date");
+        if (!id) return toast.error('Your are not authorized')
+
+        try {
+            const res = await createRequest(id, date)
+            if (res.success) toast.success('Your request has been sent');
+            setDateRange(undefined)
+            setOpenBookingDialog({ id: "", open: false })
+        } catch (error) {
+            toast.error((error as Error).message || "Request send has been failed")
+        } finally {
+            setLoadingRequest(false)
+        }
+    }
+    console.log('-----------', !requestData);
+
+    useEffect(() => {
+        const res = async () => {
+            const result = await getSingleRequestForTenant(id)
+            console.log('result', result);
+            setRequestData(result?.data)
+
+            setDateRange({
+                from: result.data.date.from,
+                to: result.data.date.to
+            })
+        };
+        res()
+    }, [id]);
+
+
+    // console.log(dateRange);
+    if (loading || !id) {
         return <div>Loading...</div>;
     }
-    console.log(user);
 
     return (
         <div className="grid lg:grid-cols-3 grid-cols-1 my-10 ">
@@ -74,7 +110,7 @@ const ViewDetailsPage = () => {
                     {
                         data?.images &&
                         data?.images?.slice(0, 4)?.map((image, index) => {
-                            console.log('images', image);
+
                             return (
                                 <div key={index} className="relative group overflow-hidden cursor-pointer ">
                                     <Image
@@ -189,7 +225,12 @@ const ViewDetailsPage = () => {
                     </div>
                     <div
                         className="mb-4 flex-wrap flex items-center gap-2  border-gray-200 pb-2 text-sm font-semibold uppercase tracking-wide text-gray-700">
-                        <Button onClick={() => setOpenBookingDialog({ id: data?._id || "", open: true })} disabled={loading || !user} variant="destructive" className="w-full"> Book Now</Button>
+
+                        {data?.status === "available" ? (<Button onClick={() => setOpenBookingDialog({ id: data?._id || "", open: true })} disabled={loading || !user} variant="destructive" className="w-full"> {requestData ? "Requested" : "Book Now"}</Button>) :
+                            data?.status === "rented" ? (<Button disabled variant="destructive" className="w-full"> Not Available Now</Button>) :
+                                (<Button disabled variant="destructive" className="w-full"> Under Mainintenance</Button>)
+                        }
+
                         {!user && <p className="text-gray-500 text-center bg-gray-200 flex justify-center w-full items-center gap-2 font-extralight py-1 px-2 text-sm">
                             <AlertCircle className="w-4" />
                             Please <button className="font-bold hover:border-b transition-all cursor-pointer duration-300 hover:text-red-500 text-black" onClick={() => router.push("/auth/login")}>Login</button> or <button className="font-bold hover:border-b transition-all duration-300 hover:text-red-500 text-black cursor-pointer" onClick={() => router.push('/auth/register')}>Regsiter</button>
@@ -197,12 +238,12 @@ const ViewDetailsPage = () => {
                     </div>
                 </div>
 
-
+                {/* "available" | "rented" | "maintenance" */}
             </div>
 
             {/* ===Booking dialog======== */}
             <motion.div
-                className="absolute top-1/2 left-1/2 -translate-y-1/2  -translate-x-1/2 px-2 py-10 bg-white [box-shadow:5px_5px_rgb(82_82_82)] border"
+                className="absolute top-1/2 left-1/2  -translate-y-1/2 py-2 -translate-x-1/2 px-2  bg-white [box-shadow:5px_5px_rgb(82_82_82)] border border-gray-200"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{
 
@@ -212,16 +253,35 @@ const ViewDetailsPage = () => {
 
                 transition={{ duration: 0.5, ease: "easeInOut" }}
             >
+                <div className="flex justify-end w-full">
+                    <button onClick={() => {
+                        setOpenBookingDialog({ id: "", open: false })
+                    }} className=" hover:text-red-500 transition-colors duration-300"> <X /> </button>
+                </div>
                 <Calendar
                     mode="range"
                     defaultMonth={dateRange?.from}
                     selected={dateRange}
                     onSelect={setDateRange}
-                    numberOfMonths={2}
-                    className="w-full rounded-lg border shadow-sm horizontal-calendar"
+                    numberOfMonths={1}
+                    className="w-full rounded-lg border-none horizontal-calendar"
                 />
 
+                <div>
+                    <Button
+                        disabled={dateRange === undefined || !!requestData}
+                        onClick={() => handleSendRequest(openBookingDialog.id, dateRange)}
+                        className="rounded-none w-full text-xs" size="sm" value="ghost">
+                        {loadingRequest ? <Spinner /> : <Send />}
 
+                        {loadingRequest
+                            ? "Request is sending..."
+                            : requestData
+                                ? "Already Requested"
+                                : "Send Request"}
+
+                    </Button>
+                </div>
             </motion.div>
             {/* ======zoom pic show dialog======= */}
             <motion.div

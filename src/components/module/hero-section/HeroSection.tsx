@@ -69,7 +69,7 @@ export default function HeroSection() {
           <span>Filter</span>
           <ArrowDown className="size-4" />
         </Button>
-        {/* ============filter all fields part  ==========*/}
+        {/* ============filter all fields part==========*/}
         <motion.div
         initial={{ height: 0, opacity: 0 }}
           animate={{

@@ -2,15 +2,16 @@
 import Image from "next/image";
 import Link from "next/link"
 import Logo from "@/assets/logo/logo.png";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, MenuIcon, User, UserCog, X } from "lucide-react";
 import { useState } from "react";
 import { useUser } from "@/contexts/UseerContext";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { logout } from "@/service/auth/AuthService";
 import toast from "react-hot-toast";
+import { getInitials } from "@/lib/utils";
 
 
 
@@ -80,28 +81,48 @@ export function Navbar() {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-52">
-                <DropdownMenuLabel>@{user.userName}</DropdownMenuLabel>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <Button onClick={()=>router.push('/profile')} variant="outline">
-                      Profile
-                    </Button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Button onClick={()=>router.push(`/${user?.role}`)} variant="outline">
-                      Dashoard
-                    </Button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Button onClick={()=>handleLogout()} variant="outline">
-                      Logout
-                    </Button>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup >
+              <DropdownMenuContent align="end" className="w-52" forceMount>
+        <DropdownMenuLabel className="flex gap-2">
+          <Avatar>
+            <AvatarImage src={user?.photoURL} alt={user?.userName} />
+            <AvatarFallback>
+              {user?.userName && getInitials(user?.userName)}
+            </AvatarFallback>
+          </Avatar>
 
+          <div className="flex flex-col overflow-hidden">
+            <p className="text-sm font-medium truncate">{user?.userName}</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {user?.email}
+            </p>
+          </div>
+        </DropdownMenuLabel>
 
-              </DropdownMenuContent>
+        <DropdownMenuSeparator />
+
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link href="/profile">
+              <User className="me-2 size-4" />
+              Profile
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
+            <Link href={`/${user?.role}`}>
+              <MenuIcon className="me-2 size-4" />
+              Dashboard
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem onClick={handleLogout}>
+          <LogOut className="me-2 size-4" />
+          Sign Out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
             </DropdownMenu>
 
           </div>
