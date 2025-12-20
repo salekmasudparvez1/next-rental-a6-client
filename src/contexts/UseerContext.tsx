@@ -1,4 +1,5 @@
 
+import SplashScreen from "@/components/module/loading/SplashScreen";
 import { getCurrentUser } from "@/service/auth/AuthService";
 import { IUser } from "@/types/user";
 import {
@@ -15,6 +16,8 @@ interface IUserProviderValues {
   isLoading: boolean;
   setUser: (user: IUser | null) => void;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  showSplash: boolean;
+  setShowSplash: Dispatch<SetStateAction<boolean>>;
 }
 
 const UserContext = createContext<IUserProviderValues | undefined>(undefined);
@@ -22,9 +25,11 @@ const UserContext = createContext<IUserProviderValues | undefined>(undefined);
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
 
   const handleUser = async () => {
     const user = await getCurrentUser();
+
     setUser(user);
     setIsLoading(false);
   };
@@ -34,8 +39,17 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     handleUser();
   }, [isLoading]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return <SplashScreen />;
+  }
+
   return (
-    <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
+    <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading, showSplash, setShowSplash }}>
       {children}
     </UserContext.Provider>
   );

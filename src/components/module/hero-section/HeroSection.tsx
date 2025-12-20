@@ -153,7 +153,7 @@ export default function HeroSection() {
             {/* IMAGE */}
             <div className="relative overflow-hidden">
               <Image
-                src={house.images?.[0] || "/placeholder-house.jpg"}
+                src={house.images?.[0] || "https://res.cloudinary.com/dncnvqrc6/image/upload/v1766069556/landscape-placeholder_k5uqlb.svg"}
                 width={400}
                 height={260}
                 alt={house.title}

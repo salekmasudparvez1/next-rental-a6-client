@@ -1,6 +1,6 @@
 "use client"
 
-import { createRequest, getAllPropertiesPublicFunction, getRequestForTenant, getSingleRequestForTenant } from "@/service/post/postService";
+import { createRequest, getAllPropertiesPublicFunction, getSingleRequestForTenant } from "@/service/post/postService";
 import { RentalHouseFormData } from "@/types/post";
 import { AlertCircle, AlertTriangle, Bed, BookOpen, CheckCircle, DollarSign, Pin, Send, X, XCircle, ZoomIn } from "lucide-react";
 import Image from "next/image";
@@ -15,6 +15,7 @@ import { DateRange } from "react-day-picker";
 import toast from "react-hot-toast";
 import { Spinner } from "@/components/ui/spinner";
 import { IRequestOfTenant } from "@/types/request";
+
 
 
 
@@ -47,6 +48,7 @@ const ViewDetailsPage = () => {
             const result = await getAllPropertiesPublicFunction(pageIndex, pageLimit, id)
             setData(result?.data?.data[0] || {})
             setLoading(false)
+
         }
 
         fetchData()
@@ -55,7 +57,8 @@ const ViewDetailsPage = () => {
     }, [id])
 
     const handleSendRequest = async (id: string, date: DateRange | undefined) => {
-        setLoadingRequest(true)
+
+
         if (date === undefined) return toast.error("Please select date");
         if (!id) return toast.error('Your are not authorized')
 
@@ -67,29 +70,34 @@ const ViewDetailsPage = () => {
         } catch (error) {
             toast.error((error as Error).message || "Request send has been failed")
         } finally {
+
             setLoadingRequest(false)
         }
     }
-    console.log('-----------', !requestData);
+
 
     useEffect(() => {
         const res = async () => {
+
             const result = await getSingleRequestForTenant(id)
-            console.log('result', result);
             setRequestData(result?.data)
 
             setDateRange({
-                from: result.data.date.from,
-                to: result.data.date.to
+                from: result?.data?.date?.from,
+                to: result?.data?.date?.to
             })
         };
         res()
     }, [id]);
 
 
-    // console.log(dateRange);
-    if (loading || !id) {
-        return <div>Loading...</div>;
+
+    if (loading) {
+        return (
+            <div className="loader-overlay h-[calc(100vh-64px)] flex justify-center items-center">
+                <Spinner variant="ring" />
+            </div>
+        )
     }
 
     return (
@@ -98,7 +106,7 @@ const ViewDetailsPage = () => {
             <div className="lg:col-span-2  p-3 flex flex-col gap-5 justify-start items-start">
                 <div className=" w-full">
                     <Image
-                        src={data?.images ? data?.images[0] : ""}
+                        src={data?.images ? data?.images[0] : "https://res.cloudinary.com/dncnvqrc6/image/upload/v1766069556/landscape-placeholder_k5uqlb.svg"}
                         alt="property image"
                         width={400}
                         height={400}
@@ -226,10 +234,21 @@ const ViewDetailsPage = () => {
                     <div
                         className="mb-4 flex-wrap flex items-center gap-2  border-gray-200 pb-2 text-sm font-semibold uppercase tracking-wide text-gray-700">
 
-                        {data?.status === "available" ? (<Button onClick={() => setOpenBookingDialog({ id: data?._id || "", open: true })} disabled={loading || !user} variant="destructive" className="w-full"> {requestData ? "Requested" : "Book Now"}</Button>) :
-                            data?.status === "rented" ? (<Button disabled variant="destructive" className="w-full"> Not Available Now</Button>) :
-                                (<Button disabled variant="destructive" className="w-full"> Under Mainintenance</Button>)
-                        }
+                        {data?.status === "available" ? (
+                            requestData?.status === "pending" ? (
+                                <Button onClick={() => setOpenBookingDialog({ id: data?._id || "", open: true })} disabled={loading || !user} variant="destructive" className="w-full"> {requestData ? "Requested" : "Book Now"}</Button>
+                            ) : requestData?.status === "reject" ? (
+                                <Button disabled variant="destructive" className="w-full"> Request Rejected</Button>
+                            ) :requestData?.status === "approve"? (
+                                <Button variant="destructive" className="w-full bg-green-600 hover:bg-green-900" onClick={() => router.push(`/payment/${data?._id}`)}>
+                                    Pay now
+                                </Button>
+                            ):null
+                        ) : data?.status === "rented" ? (
+                            <Button disabled variant="destructive" className="w-full"> Not Available Now</Button>
+                        ) : (
+                            <Button disabled variant="destructive" className="w-full"> Under Mainintenance</Button>
+                        )}
 
                         {!user && <p className="text-gray-500 text-center bg-gray-200 flex justify-center w-full items-center gap-2 font-extralight py-1 px-2 text-sm">
                             <AlertCircle className="w-4" />

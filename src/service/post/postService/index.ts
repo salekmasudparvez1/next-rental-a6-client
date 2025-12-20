@@ -203,5 +203,65 @@ export const getRequestForTenant = async () => {
         throw error instanceof Error ? error : new Error(String(error))
     }
 }
+export const getRequestForLandlord = async () => {
+    try {
+        const token = (await cookies()).get('accessToken')?.value
+        if (!token) {
+            return null;
+        }
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/landlords/requests`, {
+            method: 'GET',
+            headers: {
+                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            credentials: 'include',
+            cache: 'no-store'
+        });
+        
+        if (!res.ok) {
+            throw new Error(`Failed to create post: ${res.status}`);
+        }
+        const result = res.json()
+        console.log(result);
+       
+        return result;
+
+    } catch (error: unknown) {
+        throw error instanceof Error ? error : new Error(String(error))
+    }
+}
+export const updateRequestStatus = async (requestId: string, status: 'approve' | 'reject' | 'pending') => {
+    try {
+        const token = (await cookies()).get('accessToken')?.value
+        if (!token) {
+            return null;
+        }
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/landlords/requests/${requestId}`, {
+            method: 'PUT',
+            headers: {
+                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body:JSON.stringify({status}),
+            credentials: 'include',
+            cache: 'no-store'
+        });
+        
+        if (!res.ok) {
+            throw new Error(`Failed to update request status: ${res.status}`);
+        }
+        const result = res.json()
+       
+       
+        return result;
+
+    } catch (error: unknown) {
+        throw error instanceof Error ? error : new Error(String(error))
+    }
+}
+
 
 

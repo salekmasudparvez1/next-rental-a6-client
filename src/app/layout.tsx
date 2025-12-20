@@ -23,16 +23,19 @@ export const metadata: Metadata = {
     "Findbasa is your ultimate platform for discovering and sharing amazing content.",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`antialiased ${firaSans.variable}  `}
+        id="mainBodyPart"
       >
         <Providers>
           <SettingsProvider locale="en">
