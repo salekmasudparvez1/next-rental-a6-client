@@ -6,7 +6,7 @@ import { AlertCircle, AlertTriangle, Bed, BookOpen, CheckCircle, DollarSign, Pin
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useUser } from "@/contexts/UseerContext";

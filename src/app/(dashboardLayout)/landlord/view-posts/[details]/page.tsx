@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import toast from 'react-hot-toast';
 import { Card, CardContent } from '@/components/ui/card';
-import { RentalHouseCreateZodSchema } from '@/components/module/create-post/post.validation';
 import ImageHandlaer from '@/components/module/create-post/ImageHandlaer';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import LocationPicker from '@/components/module/location/LocationPicker';
@@ -18,10 +17,13 @@ import InputCombo, { ComboOption } from '@/components/module/create-post/InputCo
 import { useBdInf } from '@/hooks/use-bdinfo';
 import { TDivision, TDistrict, TUpazila } from '@/types/bd-data';
 import { useUpdateost } from '@/hooks/use-post';
-import { RentalHouseFormData, IFeature } from '@/types/post';
 import { getPostById, updatePost } from '@/service/post/postService';
 import { useParams, useRouter } from 'next/navigation';
 import PropertyFormSkeleton from '@/components/module/loading/PropertyFormSkeliton';
+import { RentalHouseCreateZodSchema, RentalHouseFormData } from '@/components/module/create-post/post.validation';
+import { IFeature } from '@/types/post';
+
+
 
 
 
@@ -60,7 +62,10 @@ const PostDetailsPage = () => {
             },
             rentAmount: formData.rentAmount || 0,
             bedroomNumber: formData.bedroomNumber || 1,
+            landloardId: formData.landloardId || undefined,
+            landloardDetails: formData.landloardDetails || undefined,
             features: formData?.features || [],
+            comments: formData?.comments || [], // Changed from `formData?.comments || []` to always return []
             images: [],
         },
     });
@@ -110,6 +115,7 @@ const PostDetailsPage = () => {
                         rentAmount: postData?.rentAmount || 0,
                         bedroomNumber: postData?.bedroomNumber || 1,
                         features: postData?.features || [],
+                        comments: postData?.comments || [], // Add this line
                         images: postData?.images || [],
                     });
                 }

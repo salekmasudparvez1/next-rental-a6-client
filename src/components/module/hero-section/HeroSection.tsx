@@ -11,7 +11,7 @@ import { RentalHouseFormData } from "@/types/post";
 import { ArrowDown, Bed, DollarSign, Eye, Filter, FilterIcon, MapPinIcon, SearchCheck } from "lucide-react";
 import { RentalCardSkeleton } from "@/components/core/data-table/card/RentalCardSkeleton";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
-import { motion } from "framer-motion";
+import { motion } from "motion/react"
 import { useRouter } from "next/navigation";
 
 

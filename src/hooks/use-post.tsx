@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { RentalHouseFormData } from "@/types/post"
+import { RentalHouseFormData } from "@/components/module/create-post/post.validation"
 
 export const useCreatePost = (initialData?: Partial<RentalHouseFormData>) => {
   const STORAGE_KEY = "create-post-form-data"
@@ -32,6 +32,7 @@ export const useCreatePost = (initialData?: Partial<RentalHouseFormData>) => {
       rentAmount: initialData?.rentAmount ?? parsed.rentAmount ?? 0,
       bedroomNumber: initialData?.bedroomNumber ?? parsed.bedroomNumber ?? 1,
       features: initialData?.features ?? parsed.features ?? [],
+      comments: initialData?.comments ?? parsed.comments ?? [],
       images: initialData?.images ?? [],
     }
   })
@@ -125,6 +126,7 @@ export const useUpdateost = (initialData?: Partial<RentalHouseFormData>) => {
       rentAmount: initialData?.rentAmount ?? parsed.rentAmount ?? 0,
       bedroomNumber: initialData?.bedroomNumber ?? parsed.bedroomNumber ?? 1,
       features: initialData?.features ?? parsed.features ?? [],
+      comments: initialData?.comments ?? parsed.comments ?? [],
       images: initialData?.images ?? [],
     }
   })

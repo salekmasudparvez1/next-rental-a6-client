@@ -3,7 +3,7 @@ export interface IFeature {
   color: string;
 }
 export interface Ilandloard {
-  _id:string
+  _id?:string
   username: string;
   email: string;
   phoneNumber: string;
@@ -14,13 +14,21 @@ export interface Ilandloard {
   photoURL: string;
   status: 'pending' | 'approved' | 'rejected';
   subscriptionPlan: 'free' | 'premium';
+  createdAt?:Date,
+  updatedAt?:Date
 }
+export interface IComment {
+  userId: string;
+  comment: string;
+  rating: number;
+}
+
 export interface RentalHouseFormData {
   _id?: string;
   title: string;
   description: string;
   landloardId?:Ilandloard | string;
-  landloardDetails:Ilandloard;
+  landloardDetails?:Ilandloard;
   location: {
     division: string;
     district: string;
@@ -35,5 +43,6 @@ export interface RentalHouseFormData {
   rentAmount: number;
   bedroomNumber: number;
   features?: IFeature[];
+  comments?: IComment[];
   images?: string[] | undefined;
 }

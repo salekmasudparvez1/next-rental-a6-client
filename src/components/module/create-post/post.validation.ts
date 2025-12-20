@@ -1,31 +1,47 @@
-import z from "zod";
+import z from "zod/v3";
 
-const locationSchema = z.object({
-    division: z.string().min(2, "Division is required"),
-    district: z.string().min(2, "District is required"),
-    subDistrict: z.string().min(2, "Sub-district is required"),
-    streetAddress: z.string().min(5, "Street address must be at least 5 characters"),
-    map: z.object({
-        lat: z.number().refine((val) => val >= -90 && val <= 90, {
-            message: "Latitude must be between -90 and 90",
-        }),
-        lng: z.number().refine((val) => val >= -180 && val <= 180, {
-            message: "Longitude must be between -180 and 180",
-        }),
-    }),
-});
-// Zod Schema
+
 export const RentalHouseCreateZodSchema = z.object({
-    title: z.string().min(2, "Title is required"),
-    location: locationSchema,
-    description: z.string().min(5, "Description must be at least 5 characters"),
-    status: z.enum(["available", "rented", "maintenance"]),
-    isPublished: z.boolean().optional(),
-    rentAmount: z.number().positive("Rent must be a positive number"),
-    images: z.array(z.string().url("Each image must be a valid URL")).optional(),
-    bedroomNumber: z.number().min(1).max(20, "Bedrooms must be between 1–20"),
-    features: z.array(z.object({
-        name: z.string().min(1, "Feature name is required"),
-        color: z.string().min(1, "Color is required"),
-    })).max(5, "You can add up to 5 features only").optional(),
+  // Basic Fields
+  title: z.string().min(2, "Title is required"),
+  description: z.string().min(5, "Description must be at least 5 characters"),
+  status: z.enum(["available", "rented", "maintenance"]),
+  rentAmount: z.number().positive("Rent must be a positive number"),
+  bedroomNumber: z.number().min(1).max(20, "Bedrooms must be between 1–20"),
+  
+  // Location Object
+  location: z.object({
+    division: z.string().min(1, "Division is required"),
+    district: z.string().min(1, "District is required"),
+    subDistrict: z.string().min(1, "Sub-district is required"),
+    streetAddress: z.string().min(1, "Street address is required"),
+    map: z.object({
+      lat: z.number(),
+      lng: z.number(),
+    }),
+  }),
+
+  // Features (Optional Array)
+  features: z.array(z.object({
+    name: z.string().min(1, "Feature name is required"),
+    color: z.string().min(1, "Color is required"),
+  })).optional(),
+
+  // Comments (Changed to optional to match form usage)
+  comments: z.array(z.object({
+    userId: z.string().min(1, "User ID is required"),
+    comment: z.string().min(1, "Comment is required"),
+    rating: z.number().min(1).max(5)
+  })).optional(),
+
+  // Images (Optional Array)
+  images: z.array(z.string().url()).optional(),
+
+  // Metadata Fields
+  _id: z.string().optional(),
+  landloardId: z.union([z.string(), z.any()]).optional(),
+  landloardDetails: z.any().optional(), 
 });
+
+// ADD THIS: Infer the type from the schema
+export type RentalHouseFormData = z.infer<typeof RentalHouseCreateZodSchema>;
