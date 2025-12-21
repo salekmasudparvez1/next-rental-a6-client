@@ -1,11 +1,11 @@
 
 
-import React from "react";
+
 import "@/app/style/splash.css";
 
 const SplashScreen = () => {
   return (
-    <div className="flex flex-col justify-center items-center min-w-screen min-h-screen absolute w-full h-full bg-gradient-to-br from-blue-50 via-white to-purple-50 z-50">
+    <div className="flex flex-col justify-center items-center min-w-screen min-h-screen absolute w-full h-full bg-linear-to-br from-blue-50 via-white to-purple-50 z-50">
       <div className="loader-container">
         <div className="loader">
       <div className="truckWrapper">
@@ -18,8 +18,8 @@ const SplashScreen = () => {
           >
             <path
               strokeWidth="3"
-              stroke="#1f2937"
-              fill="#3b82f6"
+              stroke="#ff0000 "
+              fill="#ff0000 "
               d="M135 22.5H177.264C178.295 22.5 179.22 23.133 179.594 24.0939L192.33 56.8443C192.442 57.1332 192.5 57.4404 192.5 57.7504V89C192.5 90.3807 191.381 91.5 190 91.5H135C133.619 91.5 132.5 90.3807 132.5 89V25C132.5 23.6193 133.619 22.5 135 22.5Z"
             />
             <path

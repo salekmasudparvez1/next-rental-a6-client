@@ -6,7 +6,7 @@ import { AlertCircle, AlertTriangle, Bed, BookOpen, CheckCircle, DollarSign, Pin
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useUser } from "@/contexts/UseerContext";
@@ -33,6 +33,7 @@ const ViewDetailsPage = () => {
     });
     const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
     const [requestData, setRequestData] = useState<IRequestOfTenant>()
+    const [reFetchRequestData, setReFetchRequestData] = useState<number>(0)
 
     const { user } = useUser()
     const router = useRouter()
@@ -57,6 +58,7 @@ const ViewDetailsPage = () => {
     }, [id])
 
     const handleSendRequest = async (id: string, date: DateRange | undefined) => {
+        setLoadingRequest(true)
 
 
         if (date === undefined) return toast.error("Please select date");
@@ -67,6 +69,8 @@ const ViewDetailsPage = () => {
             if (res.success) toast.success('Your request has been sent');
             setDateRange(undefined)
             setOpenBookingDialog({ id: "", open: false })
+           setReFetchRequestData(prev => prev + 1)
+
         } catch (error) {
             toast.error((error as Error).message || "Request send has been failed")
         } finally {
@@ -80,7 +84,7 @@ const ViewDetailsPage = () => {
         const res = async () => {
 
             const result = await getSingleRequestForTenant(id)
-            setRequestData(result?.data)
+            setRequestData((result?.data))
 
             setDateRange({
                 from: result?.data?.date?.from,
@@ -88,7 +92,7 @@ const ViewDetailsPage = () => {
             })
         };
         res()
-    }, [id]);
+    }, [id,reFetchRequestData]);
 
 
 
@@ -239,11 +243,11 @@ const ViewDetailsPage = () => {
                                 <Button onClick={() => setOpenBookingDialog({ id: data?._id || "", open: true })} disabled={loading || !user} variant="destructive" className="w-full"> {requestData ? "Requested" : "Book Now"}</Button>
                             ) : requestData?.status === "reject" ? (
                                 <Button disabled variant="destructive" className="w-full"> Request Rejected</Button>
-                            ) :requestData?.status === "approve"? (
+                            ) : requestData?.status === "approve" ? (
                                 <Button variant="destructive" className="w-full bg-green-600 hover:bg-green-900" onClick={() => router.push(`/payment/${data?._id}`)}>
                                     Pay now
                                 </Button>
-                            ):null
+                            ) : (<Button onClick={() => setOpenBookingDialog({ id: data?._id || "", open: true })} disabled={loading || !user} variant="destructive" className="w-full"> {requestData ? "Requested" : "Book Now"}</Button>)
                         ) : data?.status === "rented" ? (
                             <Button disabled variant="destructive" className="w-full"> Not Available Now</Button>
                         ) : (
@@ -261,47 +265,72 @@ const ViewDetailsPage = () => {
             </div>
 
             {/* ===Booking dialog======== */}
-            <motion.div
-                className="absolute top-1/2 left-1/2  -translate-y-1/2 py-2 -translate-x-1/2 px-2  bg-white [box-shadow:5px_5px_rgb(82_82_82)] border border-gray-200"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{
+            <AnimatePresence>
+                {openBookingDialog?.open && (
+                    <>
+                        {/* BACKDROP */}
+                        <motion.div
+                            className="fixed  inset-0 bg-black/30 backdrop-blur-sm z-50"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() =>
+                                setOpenBookingDialog({ id: "", open: false })
+                            }
+                        />
 
-                    opacity: openBookingDialog?.open ? 1 : 0,
-                    scale: openBookingDialog?.open ? 1 : 0,
-                }}
+                        {/* MODAL */}
+                        <motion.div
+                            className="fixed top-1/2 left-1/2 z-50
+                   -translate-x-1/2 -translate-y-1/2
+                   bg-white px-3 py-2"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="flex flex-end">
+                                <button
+                                    onClick={() =>
+                                        setOpenBookingDialog({ id: "", open: false })
+                                    }
+                                    className="ml-auto"
+                                >
+                                    <X className="w-6  h-6 text-gray-600 hover:text-gray-900 transition-colors duration-300" />
+                                </button>
+                            </div>
 
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-                <div className="flex justify-end w-full">
-                    <button onClick={() => {
-                        setOpenBookingDialog({ id: "", open: false })
-                    }} className=" hover:text-red-500 transition-colors duration-300"> <X /> </button>
-                </div>
-                <Calendar
-                    mode="range"
-                    defaultMonth={dateRange?.from}
-                    selected={dateRange}
-                    onSelect={setDateRange}
-                    numberOfMonths={1}
-                    className="w-full rounded-lg border-none horizontal-calendar"
-                />
+                            <Calendar
+                                mode="range"
+                                defaultMonth={dateRange?.from}
+                                selected={dateRange}
+                                onSelect={setDateRange}
+                                numberOfMonths={1}
+                                className="w-full rounded-lg border-none horizontal-calendar"
+                            />
 
-                <div>
-                    <Button
-                        disabled={dateRange === undefined || !!requestData}
-                        onClick={() => handleSendRequest(openBookingDialog.id, dateRange)}
-                        className="rounded-none w-full text-xs" size="sm" value="ghost">
-                        {loadingRequest ? <Spinner /> : <Send />}
+                            <div>
+                                <Button
+                                    disabled={dateRange?.from === undefined || dateRange?.to === undefined || !!requestData}
+                                    onClick={() => handleSendRequest(openBookingDialog.id, dateRange)}
+                                    className="rounded-none w-full text-xs" size="sm" value="ghost">
+                                    {loadingRequest ? <Spinner /> : <Send />}
 
-                        {loadingRequest
-                            ? "Request is sending..."
-                            : requestData
-                                ? "Already Requested"
-                                : "Send Request"}
+                                    {loadingRequest
+                                        ? "Request is sending..."
+                                        : requestData
+                                            ? "Already Requested"
+                                            : "Send Request"}
 
-                    </Button>
-                </div>
-            </motion.div>
+                                </Button>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+
             {/* ======zoom pic show dialog======= */}
             <motion.div
                 className="absolute top-1/2 left-1/2 -translate-y-1/2 w-[calc(100vh-200px)] -translate-x-1/2 px-2 py-10 bg-white [box-shadow:5px_5px_rgb(82_82_82)] border"

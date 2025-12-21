@@ -54,12 +54,14 @@ export function UserDropdown() {
       setUser(null)
       toast.success("Logged out successfully")
       router.push("/auth/login")
+
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Logout failed"
       )
     } finally {
       setIsLoading(false)
+      router.push("/auth/login")
     }
   }
 
@@ -68,6 +70,7 @@ export function UserDropdown() {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
+       
         <Button variant="outline" size="icon" className="rounded-lg">
           <Avatar className="size-9">
             <AvatarImage src={photoURL} alt={username} />

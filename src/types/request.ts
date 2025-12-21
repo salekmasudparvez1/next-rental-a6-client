@@ -1,18 +1,6 @@
 import { RentalHouseFormData } from "@/components/module/create-post/post.validation";
 
-export interface IRequestOfTenant{
-  tenantId: string;
-  rentalHouseId: string; 
-  landloardId: string; 
-  status: 'pending' | 'approve' | 'reject';
-  date:{
-    from:Date;
-    to:Date;
-  },
-  createdAt:Date;
-  updatedAt:Date;
-  _id:string;
-}
+
 
 interface IUser {
   _id: string;
@@ -35,6 +23,19 @@ export interface IRequestOfLandlord{
   rentalHouseId: RentalHouseFormData; 
   landloardId: string; 
   status:  'pending' | 'approve' | 'reject';
+  date:{
+    from:Date;
+    to:Date;
+  },
+  createdAt:Date;
+  updatedAt:Date;
+  _id:string;
+}
+export interface IRequestOfTenant{
+  tenantId: string;
+  rentalHouseId: RentalHouseFormData; 
+  landloardId: IUser; 
+  status: 'pending' | 'approve' | 'reject';
   date:{
     from:Date;
     to:Date;

@@ -256,3 +256,30 @@ form {
     flex-direction: row;
   }
 }
+/* ----table css---- */
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .table-row-wrapper {
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .accordion-content {
+    display: none;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+
+  .accordion-content.open {
+    display: block;
+  }
+}
+
+/* Styling for the expanded rows (optional) */
+.accordion-content {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin-top: 10px;
+}

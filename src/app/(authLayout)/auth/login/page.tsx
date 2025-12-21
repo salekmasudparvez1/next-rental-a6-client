@@ -15,6 +15,7 @@ import { loginUser } from "@/service/auth/AuthService"
 import { useUser } from "@/contexts/UseerContext"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
+import Link from "next/link"
 
 
 
@@ -78,7 +79,7 @@ export default function LoginPage() {
 
 
     return (
-        <Card className="w-full max-w-sm group relative ">
+        <Card className="w-full max-w-sm group mx-4 sm:mx-0 relative ">
             <CardHeader className="w-full " >
                 <CardTitle className="text-2xl text-center">Welcome Back</CardTitle>
                 <CardDescription className="text-center">
@@ -143,6 +144,12 @@ export default function LoginPage() {
                         {isSubmitting ? "Logging in..." : "Login"}
                     </Button>
                 </form>
+                <div className="text-gray-600 mt-4 text-center">
+                    Do not have an account?{" "}
+                    <Link href={`/auth/register${redirect ? `?redirectPath=${redirect}` : ""}`} className="text-red-600 font-bold hover:underline hover:text-red-800 transition-all duration-300">
+                        Register here
+                    </Link>
+                </div>
             </CardContent>
 
         </Card>

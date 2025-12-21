@@ -72,7 +72,7 @@ export function PaginationControls<TData>({
 
 function RowsPerPage<TData>({ table }: { table: TanStackTable<TData> }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 ">
       <p className="text-sm font-medium">Rows</p>
       <Select
       
@@ -109,7 +109,7 @@ function PaginationButtons<TData>({
   table: TanStackTable<TData>
 }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 ">
       <Button
         variant="outline"
         size="icon"

@@ -19,6 +19,7 @@ import { RegisterUser } from "@/service/auth/AuthService";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@/contexts/UseerContext";
+import Link from "next/link";
 
 
 // Type Definitions
@@ -57,6 +58,7 @@ export default function RegisterPage() {
 
   // Watch fields
   const username = useWatch({ control, name: "username" });
+  // eslint-disable-next-line react-hooks/incompatible-library
   const password = watch("password");
   const formValues = watch();
 
@@ -108,7 +110,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex justify-center items-center min-h-screen overflow-y-auto min-w-screen  bg-transparent">
-      <Card className="w-full max-w-sm group relative flex items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-3 font-medium text-neutral-600 transition-all duration-100 [box-shadow:3px_3px_3px_rgb(82_82_82)]">
+      <Card className="w-full max-w-sm group relative flex items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-3 my-5 font-medium text-neutral-600 transition-all duration-100 [box-shadow:3px_3px_3px_rgb(82_82_82)]">
         <CardHeader className="w-full">
           <CardTitle className="text-2xl text-center">Create an Account</CardTitle>
           <CardDescription className="text-center">
@@ -116,11 +118,11 @@ export default function RegisterPage() {
           </CardDescription>
         </CardHeader>
 
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        <CardContent className="px-0 w-full">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 ">
 
             {/* USERNAME */}
-            <div className="grid gap-2">
+            <div className="grid gap-2 ">
               <Label>Username</Label>
               <Input
                 {...register("username", {
@@ -130,6 +132,7 @@ export default function RegisterPage() {
                     message: "No spaces allowed",
                   },
                 })}
+               
                 onChange={(e) => {
                   const cleaned = e.target.value.replace(/\s+/g, "");
                   setValue("username", cleaned);
@@ -268,6 +271,12 @@ export default function RegisterPage() {
               Register
             </Button>
           </form>
+          <div className="text-gray-600 mt-4 text-center">
+            Already have an account?{" "}
+            <Link href={`/auth/login${redirect ? `?redirectPath=${redirect}` : ""}`} className="text-red-600 font-bold hover:underline hover:text-red-800 transition-all duration-300">
+              Login here
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

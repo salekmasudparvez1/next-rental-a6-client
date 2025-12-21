@@ -18,26 +18,26 @@ import { getInitials } from "@/lib/utils";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const { user,setUser } = useUser();
+  const { user, setUser } = useUser();
   const router = useRouter()
   const navMenus = [
     { name: "Home", path: "/" },
     { name: "Find Rentals", path: "/view" },
     { name: "About Us", path: "/about" },
   ];
-  
-    const handleLogout = async () => {
-        try {
-            await logout();
-            setUser(null);
-            toast.success("Logged out successfully");
-          
-        } catch (error: unknown) {
-            toast.error(error instanceof Error ? error.message : "Logout failed");
-        } finally {
-              router.push("/auth/login");
-        }
-    };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUser(null);
+      toast.success("Logged out successfully");
+
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Logout failed");
+    } finally {
+      router.push("/auth/login");
+    }
+  };
 
   return (
 
@@ -52,7 +52,7 @@ export function Navbar() {
         </button>
 
         {/* Logo */}
-        <Image src={Logo} alt="FindBasa" width={100} height={40} />
+        <Image src={Logo} alt="FindBasa" className="h-full w-auto py-4" width={100} height={100} />
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-4">
@@ -74,7 +74,7 @@ export function Navbar() {
 
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
-                <Button className="rounded-full p-2" variant="outline">
+                <Button size="icon" className="rounded-full p-2" variant="outline">
                   <Avatar>
                     <AvatarImage src={user?.photoURL} />
                     <AvatarFallback>{user?.userName}</AvatarFallback>
@@ -82,47 +82,47 @@ export function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52" forceMount>
-        <DropdownMenuLabel className="flex gap-2">
-          <Avatar>
-            <AvatarImage src={user?.photoURL} alt={user?.userName} />
-            <AvatarFallback>
-              {user?.userName && getInitials(user?.userName)}
-            </AvatarFallback>
-          </Avatar>
+                <DropdownMenuLabel className="flex gap-2">
+                  <Avatar>
+                    <AvatarImage src={user?.photoURL} alt={user?.userName} />
+                    <AvatarFallback>
+                      {user?.userName && getInitials(user?.userName)}
+                    </AvatarFallback>
+                  </Avatar>
 
-          <div className="flex flex-col overflow-hidden">
-            <p className="text-sm font-medium truncate">{user?.userName}</p>
-            <p className="text-xs text-muted-foreground truncate">
-              {user?.email}
-            </p>
-          </div>
-        </DropdownMenuLabel>
+                  <div className="flex flex-col overflow-hidden">
+                    <p className="text-sm font-medium truncate">{user?.userName}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {user?.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
 
-        <DropdownMenuSeparator />
+                <DropdownMenuSeparator />
 
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/profile">
-              <User className="me-2 size-4" />
-              Profile
-            </Link>
-          </DropdownMenuItem>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile">
+                      <User className="me-2 size-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
 
-          <DropdownMenuItem asChild>
-            <Link href={`/${user?.role}`}>
-              <MenuIcon className="me-2 size-4" />
-              Dashboard
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/${user?.role}`}>
+                      <MenuIcon className="me-2 size-4" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
 
-        <DropdownMenuSeparator />
+                <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleLogout}>
-          <LogOut className="me-2 size-4" />
-          Sign Out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="me-2 size-4" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
             </DropdownMenu>
 
           </div>
@@ -150,7 +150,7 @@ export function Navbar() {
           </div>
         }
 
-        
+
       </div>
 
       {/* Mobile Menu */}

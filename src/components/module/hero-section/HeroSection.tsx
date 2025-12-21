@@ -65,13 +65,13 @@ export default function HeroSection() {
           onClick={() => setOpenFiletr(!openFilter)}
           className="text-sm font-medium"
         >
-          <Filter className={`size-4 transition-all duration-300 ${openFilter ? "fill-red-500":"fill-none"}`} />
+          <Filter className={`size-4 transition-all duration-300 ${openFilter ? "fill-red-500" : "fill-none"}`} />
           <span>Filter</span>
           <ArrowDown className="size-4" />
         </Button>
         {/* ============filter all fields part==========*/}
         <motion.div
-        initial={{ height: 0, opacity: 0 }}
+          initial={{ height: 0, opacity: 0 }}
           animate={{
             height: openFilter ? "auto" : 0,
             opacity: openFilter ? 1 : 0
@@ -234,8 +234,8 @@ export default function HeroSection() {
         ))}
       </div>
       <div className="flex justify-center items-center py-6">
-        <Button onClick={()=>router.push('/view')} variant='outline'>
-         <Eye/> View All
+        <Button onClick={() => router.push('/view')} variant='outline'>
+          <Eye /> View All
         </Button>
       </div>
     </div>
