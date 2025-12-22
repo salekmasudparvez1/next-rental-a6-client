@@ -60,3 +60,14 @@ export function formatFileSize(bytes: number, decimals: number = 2) {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
 }
+
+export const totatlAmountCalculate = (date : {from: Date, to: Date}, rentAmount: number) => {
+  const rentAmountPerMonth = Number(rentAmount);
+  const startingDate = new Date(date?.from);
+  const endingDate = new Date(date?.to);
+
+  const timeDifference = endingDate.getTime() - startingDate.getTime();
+  const daysDifference = timeDifference / (1000 * 3600 * 24);
+  const totalRent = (daysDifference / 30) * rentAmountPerMonth;
+  return totalRent;
+}

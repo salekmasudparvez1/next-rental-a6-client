@@ -9,6 +9,7 @@ import { getRequestForTenant } from "@/service/post/postService";
 import { IRequestOfTenant } from "@/types/request";
 import { CircleAlert, CircleCheckBig, Copy, DollarSign, Timer, CopyCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { totatlAmountCalculate } from "@/lib/utils";
 
 const ViewAllRequestPage = () => {
     const router = useRouter();
@@ -137,12 +138,6 @@ const ViewAllRequestPage = () => {
                     const date = row?.original?.date;
                     const rentData = row?.original?.rentalHouseId;
                     const rentAmountPerMonth = Number(rentData?.rentAmount || 0);
-                    const startingDate = new Date(date?.from);
-                    const endingDate = new Date(date?.to);
-
-                    const timeDifference = endingDate.getTime() - startingDate.getTime();
-                    const daysDifference = timeDifference / (1000 * 3600 * 24);
-                    const totalRent = (daysDifference / 30) * rentAmountPerMonth;
 
                     return (
                         <div className="flex flex-col justify-center items-start gap-2">
@@ -155,7 +150,7 @@ const ViewAllRequestPage = () => {
                             <div className="flex items-center justify-between">
                                 <span className="text-gray-600">Total:</span>{" "}
                                 <span className="flex items-center gap-1 font-medium text-red-500">
-                                    <DollarSign className="w-4 h-4" /> {totalRent}
+                                    <DollarSign className="w-4 h-4" /> {totatlAmountCalculate(date, rentAmountPerMonth).toFixed(2)}
                                 </span>
                             </div>
                         </div>

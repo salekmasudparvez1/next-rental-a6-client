@@ -13,8 +13,8 @@ import { useUser } from "@/contexts/UseerContext";
 import { Calendar } from "@/components/ui/calendar";
 import { DateRange } from "react-day-picker";
 import toast from "react-hot-toast";
-import { Spinner } from "@/components/ui/spinner";
 import { IRequestOfTenant } from "@/types/request";
+import { Spinner } from "@/components/ui/spinner";
 
 
 
@@ -240,11 +240,13 @@ const ViewDetailsPage = () => {
 
                         {data?.status === "available" ? (
                             requestData?.status === "pending" ? (
+
                                 <Button onClick={() => setOpenBookingDialog({ id: data?._id || "", open: true })} disabled={loading || !user} variant="destructive" className="w-full"> {requestData ? "Requested" : "Book Now"}</Button>
+
                             ) : requestData?.status === "reject" ? (
                                 <Button disabled variant="destructive" className="w-full"> Request Rejected</Button>
                             ) : requestData?.status === "approve" ? (
-                                <Button variant="destructive" className="w-full bg-green-600 hover:bg-green-900" onClick={() => router.push(`/payment/${data?._id}`)}>
+                                <Button variant="destructive" className="w-full bg-green-600 hover:bg-green-900" onClick={() => router.push(`/tenant/pay-request/${data?._id}`)}>
                                     Pay now
                                 </Button>
                             ) : (<Button onClick={() => setOpenBookingDialog({ id: data?._id || "", open: true })} disabled={loading || !user} variant="destructive" className="w-full"> {requestData ? "Requested" : "Book Now"}</Button>)
