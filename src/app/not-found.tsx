@@ -20,7 +20,7 @@ export default async function NotFound() {
   const headersList = await headers();
   const host =
     headersList.get("host") ??
-    process.env.NEXT_PUBLIC__URL ??
+    process.env.NEXT_PUBLIC_URL ??
     "findbasa.netlify.app";
   const data = await getSiteData(host);
 

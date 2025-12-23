@@ -14,13 +14,14 @@ import { Button } from "@/components/ui/button";
 // ----------------------------------
 // Stripe Setup
 // ----------------------------------
-const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string | undefined;
 
+console.log("BUILD: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:", Boolean(publishableKey));
 if (!publishableKey) {
-  console.error("❌ Stripe publishable key is missing");
+  console.error("❌ Stripe publishable key is missing (NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)");
 }
 
-const stripePromise = loadStripe(publishableKey);
+const stripePromise = publishableKey ? loadStripe(publishableKey) : Promise.resolve(null);
 
 // ----------------------------------
 // Payment Form Component
