@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Enable static HTML export behavior (replaces `next export`)
+  output: "export",
+  // Explicitly set Turbopack root to avoid workspace root warnings
+  turbopack: {
+    root: ".",
+  },
   images: {
     remotePatterns: [
       {
