@@ -10,11 +10,15 @@ import { IRequestOfTenant } from "@/types/request";
 import { CircleAlert, CircleCheckBig, Copy, DollarSign, Timer, CopyCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { totatlAmountCalculate } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
+import toast from "react-hot-toast";
 
 const ViewAllRequestPage = () => {
     const router = useRouter();
     const [data, setData] = useState<IRequestOfTenant[]>([]);
     const [copiedPhone, setCopiedPhone] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    console.log(data);
 
     // Copy to clipboard function
     const handleCopy = async (text?: string) => {
@@ -160,18 +164,35 @@ const ViewAllRequestPage = () => {
             {
                 accessorKey: "Pay",
                 header: "Pay",
-                cell: ({ row }) => (
-                    <Button
-                        
-                        variant="outline"
-                        type="button"
-                        disabled={row?.original?.status !== "approve"}
-                        className="px-4 py-2 bg-green-600 text-white hover:text-white duration-300 rounded hover:bg-green-700 transition"
-                        onClick={() => router.push(`/tenant/pay-request/${row.original._id}`)}
-                    >
-                        Pay Now
-                    </Button>
-                ),
+                cell: ({ row }) => {
+                    return row?.original.status === "approve" && row?.original?.paymentStatus === "UNPAID" ? (
+                        <Button
+                            variant="outline"
+                            type="button"
+                            disabled={row?.original?.status === "approve" || row?.original?.paymentStatus === "UNPAID" ? false : true}
+                            className="px-4 py-2 bg-green-600 text-white hover:text-white duration-300 rounded hover:bg-green-700 transition"
+                            onClick={() => router.push(`/tenant/pay-request/${row.original._id}`)}
+                        >
+                            Pay Now
+                        </Button>
+                    ) : row?.original.status === "approve" && row?.original?.paymentStatus === "PAID" ?
+                        (
+                            <span className="flex items-center gap-2 text-green-600 font-semibold">
+                                <CircleCheckBig className="w-5 h-5" />
+                                Paid
+                            </span>
+                        ) : row?.original.status === "pending" ? (
+                            <span className="flex items-center gap-2 text-amber-600 font-semibold">
+                                <Timer className="w-5 h-5" />
+                                Pending
+                            </span>
+                        ) : (
+                            <span className="flex items-center gap-2 text-rose-600 font-semibold">
+                                <CircleAlert className="w-5 h-5" />
+                                Rejected
+                            </span>
+                        );
+                },
             },
         ],
         [router, copiedPhone]
@@ -179,12 +200,27 @@ const ViewAllRequestPage = () => {
 
     useEffect(() => {
         const fetchRequests = async () => {
-            const res = await getRequestForTenant();
-            setData(res?.data || []);
+            try {
+                const res = await getRequestForTenant();
+
+                setData(res?.data || []);
+            } catch (error) {
+                toast.error(error instanceof Error ? error.message : "Failed to fetch requests");
+
+            } finally {
+                setLoading(false);
+            }
+
         };
         fetchRequests();
     }, []);
-
+    if (loading) {
+        return (
+            <div className=" flex justify-center items-center min-h-[calc(100vh-110px)]">
+                <Spinner variant="ring" />
+            </div>
+        );
+    }
     return (
         <div className="p-5 space-y-4 min-h-[calc(100vh-110px)]">
             <SectionHeader title="All Request" description="Tenant can view all request of rent houses and pay" />

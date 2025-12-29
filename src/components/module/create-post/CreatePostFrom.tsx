@@ -172,7 +172,7 @@ const CreatePostFrom = () => {
     };
 
     const onSubmit = async (data: RentalHouseFormData) => {
-        console.log('click');
+      
 
         try {
             // upload to db process

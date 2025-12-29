@@ -17,17 +17,18 @@ export const createPost = async (data: Partial<RentalHouseFormData> | FormData) 
 
             method: 'POST',
             headers: {
-                 "Content-Type": "application/json",
+                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
             body: data instanceof FormData ? data : JSON.stringify(data),
             credentials: 'include',
             cache: 'no-store'
         });
+        const result = await res.json()
         if (!res.ok) {
-            throw new Error(`Failed to create post: ${res.status}`);
+            throw new Error(result.message || `Failed to create post: ${res.status}`);
         }
-        const result = res.json()
+
         return result;
 
     } catch (error: unknown) {
@@ -47,6 +48,9 @@ export const getAllPosts = async (pageIndex?: number, pageSize?: number) => {
         });
 
         const result = await res.json();
+        if (!res.ok) {
+            throw new Error(result.message || `Failed to get posts: ${res.status}`);
+        }
 
 
         return result;
@@ -67,6 +71,9 @@ export const getAllPropertiesPublicFunction = async (pageIndex?: number, pageSiz
             cache: "no-store",
         });
         const result = await res.json();
+        if (!res.ok) {
+            throw new Error(result.message || `Failed to get properties: ${res.status}`);
+        }
         return result;
     } catch (error: unknown) {
         throw error instanceof Error ? error : new Error(String(error));
@@ -84,6 +91,9 @@ export const getPostById = async (postId: string) => {
             cache: "no-store",
         });
         const result = await res.json();
+        if (!res.ok) {
+            throw new Error(result.message || `Failed to get post: ${res.status}`);
+        }
         return result;
     } catch (error: unknown) {
         throw error instanceof Error ? error : new Error(String(error));
@@ -107,10 +117,11 @@ export const updatePost = async (data: Partial<RentalHouseFormData> | FormData, 
             credentials: 'include',
             cache: 'no-store'
         });
+        const result = await res.json()
         if (!res.ok) {
-            throw new Error(`Failed to update post: ${res.status}`);
+            throw new Error(result.message || `Failed to update post: ${res.status}`);
         }
-        const result = res.json()
+
         return result;
 
     } catch (error: unknown) {
@@ -127,33 +138,34 @@ export const createRequest = async (id: string, date: DateRange) => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tenants/requests`, {
             method: 'POST',
             headers: {
-                 "Content-Type": "application/json",
+                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body:JSON.stringify({id,date}),
+            body: JSON.stringify({ id, date }),
             credentials: 'include',
             cache: 'no-store'
         });
-        
+        const result = await res.json()
         if (!res.ok) {
-            throw new Error(`Failed to create post: ${res.status}`);
+            throw new Error(result.message || `Failed to create post: ${res.status}`);
         }
-        const result = res.json()
-       
-       
+
+
+
         return result;
 
     } catch (error: unknown) {
         throw error instanceof Error ? error : new Error(String(error))
     }
 }
-export const getSingleRequestForTenant = async (id : string) => {
+//id is from request
+export const getSingleRequestForTenantById = async (id: string) => {
     try {
         const token = (await cookies()).get('accessToken')?.value
         if (!token) {
             return null;
         }
-        
+
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tenants/request/${id}`, {
             method: 'GET',
             headers: {
@@ -163,11 +175,40 @@ export const getSingleRequestForTenant = async (id : string) => {
             credentials: 'include',
             cache: 'no-store'
         });
-        // console.log(await res.json());
+        const result = await res.json();
+
         if (!res.ok) {
-            throw new Error(`Failed to create post: ${res.status}`);
+            throw new Error(result.message || `Failed to create post: ${res.status}`);
         }
+
+        return result;
+
+    } catch (error: unknown) {
+        throw error instanceof Error ? error : new Error(String(error))
+    }
+}
+// id is from rentalHouseId
+export const getSingleRequestForTenantByInfo = async (id: string) => {
+    try {
+        const token = (await cookies()).get('accessToken')?.value
+        if (!token) {
+            return null;
+        }
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tenants/request/post/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            credentials: 'include',
+            cache: 'no-store'
+        });
         const result = await res.json()
+        if (!res.ok) {
+            throw new Error(result.message || `Failed to create post: ${res.status}`);
+        }
+
         return result;
 
     } catch (error: unknown) {
@@ -184,19 +225,20 @@ export const getRequestForTenant = async () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tenants/requests`, {
             method: 'GET',
             headers: {
-                 "Content-Type": "application/json",
+                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
             credentials: 'include',
             cache: 'no-store'
         });
-        
+        const result = await res.json()
+
         if (!res.ok) {
-            throw new Error(`Failed to create post: ${res.status}`);
+            throw new Error(result.message || `Failed to create post: ${res.status}`);
         }
-        const result = res.json()
-        console.log(result);
-       
+
+
+
         return result;
 
     } catch (error: unknown) {
@@ -213,19 +255,19 @@ export const getRequestForLandlord = async () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/landlords/requests`, {
             method: 'GET',
             headers: {
-                 "Content-Type": "application/json",
+                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
             credentials: 'include',
             cache: 'no-store'
         });
-        
+        const result = await res.json()
         if (!res.ok) {
-            throw new Error(`Failed to create post: ${res.status}`);
+            throw new Error(result.message || `Failed to create post: ${res.status}`);
         }
-        const result = res.json()
-        console.log(result);
-       
+
+
+
         return result;
 
     } catch (error: unknown) {
@@ -242,20 +284,18 @@ export const updateRequestStatus = async (requestId: string, status: 'approve' |
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/landlords/requests/${requestId}`, {
             method: 'PUT',
             headers: {
-                 "Content-Type": "application/json",
+                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body:JSON.stringify({status}),
+            body: JSON.stringify({ status }),
             credentials: 'include',
             cache: 'no-store'
         });
-        
+        const result = await res.json()
         if (!res.ok) {
-            throw new Error(`Failed to update request status: ${res.status}`);
+            throw new Error(result.message || `Failed to update request status: ${res.status}`);
         }
-        const result = res.json()
-       
-       
+
         return result;
 
     } catch (error: unknown) {

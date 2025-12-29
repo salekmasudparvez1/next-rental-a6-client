@@ -108,7 +108,7 @@ export function Sidebar() {
   return (
     <SidebarWrapper side="left" className="transition-all duration-100
               [box-shadow:3px_3px_rgb(82_82_82)]
-              hover:translate-x-[3px] hover:translate-y-[3px]
+              hover:translate-x-0.75 hover:translate-y-0.75
               hover:[box-shadow:0px_0px_rgb(82_82_82)]">
       <SidebarHeader>
         <Link
@@ -129,20 +129,22 @@ export function Sidebar() {
       <ScrollArea >
         <SidebarContent className="gap-0 ">
           {navigations.map((nav) => (
-            <SidebarGroup key={nav.title}>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {nav.items.map((item) => (
-                    <SidebarMenuItem className="transition-all duration-100
+            nav.items && nav.items.length > 0 ? (
+              <SidebarGroup key={nav.title}>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {nav.items.map((item) => (
+                      <SidebarMenuItem className="transition-all duration-100
               [box-shadow:5px_5px_rgb(82_82_82)]
-              hover:translate-x-[3px] hover:translate-y-[3px]
+              hover:translate-x-0.75 hover:translate-y-0.75
               hover:[box-shadow:0px_0px_rgb(82_82_82)]" key={item.title}>
-                      {renderMenuItem(item)}
-                    </SidebarMenuItem >
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
+                        {renderMenuItem(item)}
+                      </SidebarMenuItem >
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            ) : null
           ))}
         </SidebarContent>
       </ScrollArea>

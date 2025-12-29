@@ -3,6 +3,7 @@ export interface IUser {
     email: string;
     role: string;
     userName: string;
+    phoneNumber: number;
     isBlocked: boolean;
     isActive: boolean;
     subscriptionPlan: string;

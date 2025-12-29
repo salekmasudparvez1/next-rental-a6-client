@@ -4,7 +4,7 @@ import { getCurrentUser } from "./service/auth/AuthService";
 const authRoutes = ["/auth/login", "/auth/register"];
 
 const roleBasedPrivateRoutes = {
-   landlord: [/^\/landlord/, /^\/create-post/, /^\/profile/],
+   landlord: [/^\/landlord/, /^\/create-post/, /^\/profile/,/^\//],
    tenant: [/^\/tenant/, /^\/profile/],
    admin: [/^\/admin/, /^\/tenant/, /^\/landlord/, /^\/profile/],
 };

@@ -49,12 +49,22 @@ export const tenantNavigationsData: NavigationType[] = [
     ],
   },
   {
-    title:"All Users",
+    title:"All Requests",
     items:[
       {
         title:"All Requests",
         iconName:"BookOpen",
         href:"/tenant/all-requests"
+      }
+    ]
+  },
+  {
+    title:"Transactions",
+    items:[
+      {
+        title:"Transactions",
+        iconName:"CreditCard",
+        href:"/tenant/transaction"
       }
     ]
   },
@@ -99,5 +109,17 @@ export const landlordNavigationsData: NavigationType[] = [
         href:"/landlord/all-requests"
       }
     ]
+    
+  },
+  {
+    title:"Transactions",
+    items:[
+      {
+        title:"Transactions",
+        iconName:"CreditCard",
+        href:"/landlord/transactions"
+      }
+    ]
+
   }
 ]

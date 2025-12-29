@@ -3,6 +3,14 @@
 /* ============================ */
 @import "tailwindcss";
 @import "tw-animate-css";
+/* for pdf */
+/* Example print-specific styles */
+@media print {
+  html, body {
+    height: auto;
+    -webkit-print-color-adjust: exact;
+  }
+}
 
 /*====================*/
 /* Global Styles */

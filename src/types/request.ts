@@ -35,6 +35,8 @@ export interface IRequestOfTenant{
   tenantId: string;
   rentalHouseId: RentalHouseFormData; 
   landloardId: IUser; 
+  paymentStatus:"PAID" | "UNPAID";
+  paymentIntentId: string;
   status: 'pending' | 'approve' | 'reject';
   date:{
     from:Date;

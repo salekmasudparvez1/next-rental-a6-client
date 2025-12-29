@@ -1,36 +1,55 @@
 "use client";
 
 import CheckoutForm from "@/components/module/check-out/CheckoutFrom";
+import { Spinner } from "@/components/ui/spinner";
 import { totatlAmountCalculate } from "@/lib/utils";
-import { getSingleRequestForTenant } from "@/service/post/postService";
+import { getSingleRequestForTenantById } from "@/service/post/postService";
 import { IRequestOfTenant } from "@/types/request";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const PayRequestPage = () => {
   const [data, setData] = useState<IRequestOfTenant>({} as IRequestOfTenant);
+  const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   const params = useParams();
   const id = params?.id as string;
 
-  useEffect(() => {
+ useEffect(() => {
     if (!id) return;
 
-    const getFetchedData = async () => {
+    const fetchData = async () => {
       try {
-        const res = await getSingleRequestForTenant(id);
-        setData(res?.data);
+        const res = await getSingleRequestForTenantById(id);
+
+        if (!res?.data) {
+          router.push("/");
+          return;
+        }
+
+        setData(res.data);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        toast.error(
-          (error as Error).message || "Failed to fetch request data."
-        );
+        toast.error("Failed to fetch request data");
+        router.push("/");
+      } finally {
+        setLoading(false);
       }
     };
 
-    getFetchedData();
-  }, [id]);
+    fetchData();
+  }, [id, router]);
+   if(loading){
+      return (
+        <div className=" flex justify-center items-center min-h-[calc(100vh-110px)]">
+          <Spinner variant="ring" />
+        </div>
+      );
+    }
 
   return (
   <div className="min-h-screen bg-gray-50  px-4 py-6">
@@ -46,7 +65,7 @@ const PayRequestPage = () => {
       </div>
 
       {/* Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Request Details */}
         <div className="rounded-2xl [box-shadow:5px_5px_rgb(82_82_82)] border-gray-200 bg-white p-5 sm:p-6 border shadow-sm">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -109,7 +128,7 @@ const PayRequestPage = () => {
         </div>
 
         {/* Payment */}
-        <div className="rounded-2xl bg-white p-5 [box-shadow:5px_5px_rgb(82_82_82)] sm:p-6 border border-gray-200 ">
+        <div className="rounded-2xl lg:col-span-2 bg-white p-5 [box-shadow:5px_5px_rgb(82_82_82)] sm:p-6 border border-gray-200 ">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             Payment Details
           </h2>
