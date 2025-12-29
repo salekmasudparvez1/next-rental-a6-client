@@ -1,11 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable static HTML export behavior (replaces `next export`)
-  output: "export",
-  // Explicitly set Turbopack root to avoid workspace root warnings
+  // Use default output (do not enable static export here) because some dynamic routes
+  // are not prepared for static export via `generateStaticParams()`.
+  // Explicitly set Turbopack root to an absolute path to silence workspace detection warnings.
   turbopack: {
-    root: ".",
+    root: __dirname,
   },
   images: {
     remotePatterns: [
