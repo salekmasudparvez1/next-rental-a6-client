@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link"
 import Logo from "@/assets/logo/logo.png";
-import { LogOut, Menu, MenuIcon, User, UserCog, X } from "lucide-react";
+import { LogOut, Menu, MenuIcon, User, X } from "lucide-react";
 import { useState } from "react";
 import { useUser } from "@/contexts/UseerContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -42,7 +42,7 @@ export function Navbar() {
   return (
 
     <nav className="fixed top-0 z-50 w-full h-16 bg-gray-200 shadow shadow-accent-foreground">
-      <div className="mx-auto flex h-full max-w-[1130px] items-center justify-between px-4">
+      <div className="mx-auto flex h-full max-w-282.5 items-center justify-between px-4">
         {/* Mobile Button */}
         <button
           onClick={() => setOpen(!open)}
@@ -77,21 +77,20 @@ export function Navbar() {
                 <Button size="icon" className="rounded-full p-2" variant="outline">
                   <Avatar>
                     <AvatarImage src={user?.photoURL} />
-                    <AvatarFallback>{user?.userName}</AvatarFallback>
+                    <AvatarFallback>{user?.username}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52" forceMount>
                 <DropdownMenuLabel className="flex gap-2">
                   <Avatar>
-                    <AvatarImage src={user?.photoURL} alt={user?.userName} />
+                    <AvatarImage src={user?.photoURL} alt={user?.username} />
                     <AvatarFallback>
-                      {user?.userName && getInitials(user?.userName)}
+                      {user?.username && getInitials(user?.username)}
                     </AvatarFallback>
                   </Avatar>
-
                   <div className="flex flex-col overflow-hidden">
-                    <p className="text-sm font-medium truncate">{user?.userName}</p>
+                    <p className="text-sm font-medium truncate">{user?.username}</p>
                     <p className="text-xs text-muted-foreground truncate">
                       {user?.email}
                     </p>
@@ -132,7 +131,7 @@ export function Navbar() {
               href="/auth/login"
               className="group relative inline-flex h-8 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-3 font-medium text-neutral-600 transition-all duration-100
             [box-shadow:5px_5px_rgb(82_82_82)]
-            hover:translate-x-[3px] hover:translate-y-[3px]
+            hover:translate-x-0.75 hover:translate-y-0.75
             hover:[box-shadow:0px_0px_rgb(82_82_82)]"
             >
               Login
@@ -142,7 +141,7 @@ export function Navbar() {
               href="/auth/register"
               className="group relative inline-flex h-8 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-3 font-medium text-neutral-600 transition-all duration-100
             [box-shadow:5px_5px_rgb(82_82_82)]
-            hover:translate-x-[3px] hover:translate-y-[3px]
+            hover:translate-x-0.75 hover:translate-y-0.75
             hover:[box-shadow:0px_0px_rgb(82_82_82)]"
             >
               Register
@@ -166,7 +165,7 @@ export function Navbar() {
               onClick={() => setOpen(false)}
               className="group inline-flex h-9 items-center justify-center rounded-md border border-neutral-200 px-3 font-medium text-neutral-600 transition-all duration-100
               [box-shadow:5px_5px_rgb(82_82_82)]
-              hover:translate-x-[3px] hover:translate-y-[3px]
+              hover:translate-x-0.75 hover:translate-y-0.75
               hover:[box-shadow:0px_0px_rgb(82_82_82)]"
             >
               {menu.name}
@@ -179,7 +178,7 @@ export function Navbar() {
                 href="/auth/login"
                 className="group inline-flex h-9 items-center justify-center rounded-md border border-neutral-200 px-3 font-medium text-neutral-600 transition-all duration-100
             [box-shadow:5px_5px_rgb(82_82_82)]
-            hover:translate-x-[3px] hover:translate-y-[3px]
+            hover:translate-x-0.75 hover:translate-y-0.75
             hover:[box-shadow:0px_0px_rgb(82_82_82)]"
               >
                 Login
@@ -189,7 +188,7 @@ export function Navbar() {
                 href="/auth/register"
                 className="group inline-flex h-9 items-center justify-center rounded-md border border-neutral-200 px-3 font-medium text-neutral-600 transition-all duration-100
             [box-shadow:5px_5px_rgb(82_82_82)]
-            hover:translate-x-[3px] hover:translate-y-[3px]
+            hover:translate-x-0.75 hover:translate-y-0.75
             hover:[box-shadow:0px_0px_rgb(82_82_82)]"
               >
                 Register
