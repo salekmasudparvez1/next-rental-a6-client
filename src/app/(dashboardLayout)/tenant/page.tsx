@@ -5,29 +5,38 @@ import React, { useEffect } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { getTransactionByStatus } from '@/service/pay';
 import toast from 'react-hot-toast';
-import { ITransaction } from '@/types/pay';
+interface DateRange {
+    from: string; // ISO date string
+    to: string;   // ISO date string
+}
+
+interface IBooking {
+    title: string;
+    date: DateRange;
+    amount: number;
+}
+
+
+
 
 const Page = () => {
-    const [loading, setLoading] = React.useState(false);
-    const [getData, setGetData] = React.useState<ITransaction[] | []>([]);
+    const [loading, setLoading] = React.useState(true);
+    const [getData, setGetData] = React.useState<IBooking[] | []>([]);
     const data = getData[0];
-    const [date, setDate] = React.useState<{ from: Date | null; to: Date | null } | null>({
-        from: null,
-        to: null,
-    });
+    const [date, setDate] = React.useState<{ from: Date; to: Date } | undefined>(undefined);
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const res = await getTransactionByStatus()
-                setGetData(res.data || []);
-                if (res.data) {
+                setGetData(res || []);
+
+                if (res && res.length > 0) {
                     setDate({
-                        from: new Date(res.data.fromDate),
-                        to: new Date(res.data.toDate),
+                        from: new Date(res[0].date.from),
+                        to: new Date(res[0].date.to),
                     });
                 }
             } catch (error) {
-                console.error(error);
                 toast.error(error instanceof Error ? error.message : "Failed to fetch transaction status");
             } finally {
                 setLoading(false);
@@ -36,6 +45,7 @@ const Page = () => {
         fetchData();
 
     }, []);
+    
 
     if (loading) {
         return (
@@ -65,7 +75,7 @@ const Page = () => {
                                 Current Property:
                             </span>
                             <span className="text-sm text-gray-600">
-                                {data?.requestId?.rentalHouseId?.title || "N/A"}
+                                {data?.title || "N/A"}
                             </span>
                         </div>
                     )}
@@ -89,7 +99,7 @@ const Page = () => {
                                     Move-in Date
                                 </span>
                                 <span className="text-sm text-gray-600">
-                                    {date?.from ? date.from.toLocaleDateString() : "N/A"}
+                                    {data?.date?.from ? (new Date(data.date.from)).toLocaleDateString() : "N/A"}
                                 </span>
                             </div>
 
@@ -98,7 +108,7 @@ const Page = () => {
                                     Move-out Date
                                 </span>
                                 <span className="text-sm text-gray-600">
-                                    {date?.to ? date.to.toLocaleDateString() : "N/A"}
+                                    {data?.date?.to ? (new Date(data.date.to)).toLocaleDateString() : "N/A"}
                                 </span>
                             </div>
                         </>
@@ -165,12 +175,14 @@ const Page = () => {
                     </div>
                 ) : (
                     <Calendar
-                        defaultMonth={date?.from ?? undefined}
-                        selected={date ? [date.from, date.to].filter((d): d is Date => d !== null) : []}
+                        mode="range"
+                        defaultMonth={date?.from}
+                        selected={date}
                         numberOfMonths={1}
                         className="rounded-md [box-shadow:5px_5px_rgb(82_82_82)] w-full pointer-events-none"
                         captionLayout="dropdown"
                     />
+
                 )}
             </div>
         </div>

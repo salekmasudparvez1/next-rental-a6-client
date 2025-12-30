@@ -119,3 +119,31 @@ export const getTransactionByStatus = async () => {
 
   return result.data;
 }
+export const getTransactionByPaymentIntentId = async (paymentIntentId: string) => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL as string | undefined;
+  if (!apiUrl) {
+    throw new Error('Missing API URL');
+  }
+  const token = (await cookies()).get('accessToken')?.value
+
+  if (!token) {
+    throw new Error("You are not authorized")
+  }
+
+  const res = await fetch(`${apiUrl}/api/pay/transaction/paymentIntentId/${paymentIntentId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+
+    },
+    credentials: "include"
+  });
+  const result = await res.json();
+
+  // if (!res.ok) {
+  //   throw new Error(result?.message || `Failed to fetch transaction`);
+  // }
+
+  return result.data;
+}

@@ -2,7 +2,7 @@ export interface IUser {
     id: string;
     email: string;
     role: string;
-    userName: string;
+    username: string;
     phoneNumber: number;
     isBlocked: boolean;
     isActive: boolean;

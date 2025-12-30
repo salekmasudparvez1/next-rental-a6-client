@@ -280,8 +280,7 @@ const Page = () => {
         accessorKey: "Print",
         header: "Print",
         cell: ({ row }) => {
-          const tx = row.original;
-          const id = tx._id ?? tx.transactionId;
+         
           return (
             <div className="flex items-center gap-2">
               <Button
