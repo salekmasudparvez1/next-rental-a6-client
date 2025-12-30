@@ -43,12 +43,12 @@ export function Avator() {
                 <Button variant="outline" className="p-0 rounded-full">
                     <Avatar>
                         <AvatarImage src={user?.photoURL} />
-                        <AvatarFallback>{user?.userName?.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" >
-                <DropdownMenuLabel>Username:@{user?.userName}</DropdownMenuLabel>
+                <DropdownMenuLabel>Username:@{user?.username}</DropdownMenuLabel>
                 <DropdownMenuGroup>
                     <DropdownMenuItem onClick={() => router.push("/profile")}>
                         <User className="mr-2 h-4 w-4" />
