@@ -48,15 +48,17 @@ const AllRequestPage = () => {
         }
     };
 
+
+
     const columns = useMemo<ColumnDef<IRequestOfLandlord>[]>(
         () => [
             {
                 accessorKey: "No.",
                 header: "No.",
-                cell: ({ row }) =>(
+                cell: ({ row }) => (
                     <div className="flex text-xs font-medium items-center gap-2 flex-nowrap">
-                       <span className="border rounded-[100%] w-6 h-6 flex justify-center items-center border-gray-200 inset-shadow shadow-2xs"> {row.index + 1}</span>
-                       <h1 className="text-gray-500 tracking-widest">-{row?.original?.rentalHouseId?.title}</h1>
+                        <span className="border rounded-[100%] w-6 h-6 flex justify-center items-center border-gray-200 inset-shadow shadow-2xs"> {row.index + 1}</span>
+                        <h1 className="text-gray-500 tracking-widest">-{row?.original?.rentalHouseId?.title}</h1>
                     </div>
                 ),
             },
@@ -117,7 +119,30 @@ const AllRequestPage = () => {
                 header: "Status",
                 cell: ({ row }) => (
                     <div className="relative inline-block">
+
+                        {/* PAID watermark */}
+                        {row?.original?.paymentStatus === "PAID" && (
+                            <div
+                                className="
+        pointer-events-none
+        absolute -top-2 -right-2
+        px-2 py-0.5
+        border border-red-500/30
+        text-red-500/30
+        rounded
+        text-[9px]
+        font-semibold
+        tracking-widest
+        -rotate-6
+        select-none
+      "
+                            >
+                                PAID
+                            </div>
+                        )}
+
                         <select
+                            disabled={row?.original?.paymentStatus === "PAID"}
                             value={row?.original?.status}
                             onChange={(e) =>
                                 handleStatusChange(
@@ -125,54 +150,54 @@ const AllRequestPage = () => {
                                     e.target.value as "approve" | "reject" | "pending"
                                 )
                             }
-                            className={`appearance-none
-                                        pl-10 pr-9 py-2.5
-                                        rounded-full
-                                        font-semibold text-sm text-white
-                                        cursor-pointer
-                                        transition-all duration-300 ease-in-out
-                                        shadow-md hover:shadow-lg
-                                        transform hover: scale-105
-                                        focus:outline-none focus:ring-3 focus:ring-offset-2
-                                        ${row?.original?.status === "approve"
-                                    ? "bg-green-600 hover:bg-green-700 focus:ring-green-400"
-                                    : row?.original?.status === "pending"
-                                        ? "bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-400"
-                                        : "bg-red-600 hover:bg-red-700 focus:ring-red-400"
-                                }`}
+                            className={`
+      appearance-none
+      pl-10 pr-9
+      cursor-pointer
+      transition-all duration-300 ease-in-out
+      hover:shadow-lg
+      transform hover:scale-105
+      focus:outline-none focus:ring-2 focus:ring-offset-1
+      rounded-full
+      px-3 py-2
+      text-xs
+      font-semibold
+      text-white
+      shadow
+      backdrop-blur
+      disabled:opacity-60
+      disabled:cursor-not-allowed
+      ${row?.original?.status === "pending"
+                                    ? "bg-amber-600/90"
+                                    : row?.original?.status === "approve"
+                                        ? "bg-emerald-600/90"
+                                        : "bg-rose-600/90"
+                                }
+    `}
                             style={{ minWidth: "150px" }}
                         >
-                            <option
-                                value="approve"
-                                className="bg-white text-green-700 font-semibold"
-                            >
+                            <option value="approve" className="bg-white text-green-700 font-semibold">
                                 ✓ Approve
                             </option>
-                            <option
-                                value="pending"
-                                className="bg-white text-yellow-700 font-semibold"
-                            >
+                            <option value="pending" className="bg-white text-yellow-700 font-semibold">
                                 ⏱ Pending
                             </option>
-                            <option
-                                value="reject"
-                                className="bg-white text-red-700 font-semibold"
-                            >
+                            <option value="reject" className="bg-white text-red-700 font-semibold">
                                 ✕ Reject
                             </option>
                         </select>
 
-                        {/* Animated Icon */}
+                        {/* Left status icon */}
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                             {row?.original?.status === "approve" ? (
-                                <CircleCheck className="w-5 h-5 text-white animate-pulse" />
+                                <CircleCheck className="w-4 h-4 text-white animate-pulse" />
                             ) : row?.original?.status === "pending" ? (
                                 <Clock
-                                    className="w-5 h-5 text-white animate-spin"
+                                    className="w-4 h-4 text-white animate-spin"
                                     style={{ animationDuration: "3s" }}
                                 />
                             ) : (
-                                <XCircleIcon className="w-5 h-5 text-white" />
+                                <XCircleIcon className="w-4 h-4 text-white" />
                             )}
                         </div>
 
@@ -193,6 +218,7 @@ const AllRequestPage = () => {
                             </svg>
                         </div>
                     </div>
+
                 ),
             },
         ],

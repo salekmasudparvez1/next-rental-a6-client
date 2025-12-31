@@ -22,6 +22,8 @@ export interface IRequestOfLandlord{
   tenantId: IUser;
   rentalHouseId: RentalHouseFormData; 
   landloardId: string; 
+  paymentStatus:"PENDING" | "PAID" | "FAILED" | "CANCELED";
+  paymentIntentId: string;
   status:  'pending' | 'approve' | 'reject';
   date:{
     from:Date;
@@ -35,7 +37,7 @@ export interface IRequestOfTenant{
   tenantId: string;
   rentalHouseId: RentalHouseFormData; 
   landloardId: IUser; 
-  paymentStatus:"PAID" | "UNPAID";
+  paymentStatus:"PENDING" | "PAID" | "FAILED" | "CANCELED";
   paymentIntentId: string;
   status: 'pending' | 'approve' | 'reject';
   date:{

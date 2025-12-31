@@ -31,6 +31,8 @@ const ViewAllRequestPage = () => {
             console.error("Failed to copy", err);
         }
     };
+      
+
 
     // Table columns
     const columns = useMemo<ColumnDef<IRequestOfTenant>[]>(
@@ -165,11 +167,11 @@ const ViewAllRequestPage = () => {
                 accessorKey: "Pay",
                 header: "Pay",
                 cell: ({ row }) => {
-                    return row?.original.status === "approve" && row?.original?.paymentStatus === "UNPAID" ? (
+                    return row?.original.status === "approve" && row?.original?.paymentStatus === "FAILED" ? (
                         <Button
                             variant="outline"
                             type="button"
-                            disabled={row?.original?.status === "approve" || row?.original?.paymentStatus === "UNPAID" ? false : true}
+                            disabled={row?.original?.status === "approve" || row?.original?.paymentStatus === "FAILED" ? false : true}
                             className="px-4 py-2 bg-green-600 text-white hover:text-white duration-300 rounded hover:bg-green-700 transition"
                             onClick={() => router.push(`/tenant/pay-request/${row.original._id}`)}
                         >

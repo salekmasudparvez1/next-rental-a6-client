@@ -220,6 +220,7 @@ const Page = () => {
       }, 1000);
     };
   };
+  
 
   const columns = useMemo<ColumnDef<ITransaction>[]>(
     () => [

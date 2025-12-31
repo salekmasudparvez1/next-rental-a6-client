@@ -116,10 +116,16 @@ const ViewDetailsPage = () => {
           switch (requestData.paymentStatus) {
             case "PAID":
               return <span className="flex items-center justify-center w-full py-2 text-green-600 border border-green-600 font-semibold"><CircleCheckBig className="w-5 h-5 mr-2" /> Paid</span>;
-            case "UNPAID":
+            case "PENDING":
+              return <Button onClick={() => router.push(`/tenant/pay-request/${requestData._id}`)} className="w-full bg-green-600 hover:bg-green-700">Complete Payment</Button>;
+            case "FAILED":
+              return <Button onClick={() => router.push(`/tenant/pay-request/${requestData._id}`)} className="w-full bg-red-600 hover:bg-red-700">Retry Payment</Button>;
+            case "CANCELED":
+              return <Button onClick={() => router.push(`/tenant/pay-request/${requestData._id}`)} className="w-full bg-yellow-600 hover:bg-yellow-700">Restart Payment</Button>;
             default:
-              return <Button onClick={() => router.push(`/tenant/pay-request/${requestData._id}`)} className="w-full bg-green-600 hover:bg-green-700">Pay Now</Button>;
+              return null;
           }
+            
         default:
           return null;
       }
