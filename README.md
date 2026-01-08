@@ -283,8 +283,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 **Salek Masud Parvez**
 - Email: salekmasudparvez@gmail.com
-- GitHub: [Your GitHub Profile]
-- LinkedIn: [Your LinkedIn Profile]
+- GitHub: https://github.com/salekmasudparvez1
+- LinkedIn: https://www.linkedin.com/in/salek-masud-parvez
 
 ---
 
