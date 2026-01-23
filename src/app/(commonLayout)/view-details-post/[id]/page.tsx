@@ -36,7 +36,7 @@ const ViewDetailsPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await getAllPropertiesPublicFunction(undefined, undefined, id);
+        const result = await getAllPropertiesPublicFunction(undefined,  id);
         setData(result?.data?.data[0] || undefined);
       } catch {
         setData(undefined);
