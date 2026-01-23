@@ -13,7 +13,7 @@ import LocationPicker from '@/components/module/location/LocationPicker';
 import { X } from 'lucide-react';
 import LocationPreview from '@/components/module/location/LocationPreview';
 import { Spinner } from '@/components/ui/spinner';
-import InputCombo, { ComboOption } from '@/components/module/create-post/InputCombo';
+import InputCombo,{ TComboOption }  from '@/components/module/create-post/InputCombo';
 import { useBdInf } from '@/hooks/use-bdinfo';
 import { TDivision, TDistrict, TUpazila } from '@/types/bd-data';
 import { useUpdateost } from '@/hooks/use-post';
@@ -71,9 +71,9 @@ const PostDetailsPage = () => {
     });
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [openLocationDialog, setOpenLocationDialog] = useState(false);
-    const [divisionOptions, setDivisionOptions] = useState<ComboOption[]>([]);
-    const [districtOptions, setDistrictOptions] = useState<ComboOption[]>([]);
-    const [subdistrictOptions, setSubDistrictOptions] = useState<ComboOption[]>([]);
+    const [divisionOptions, setDivisionOptions] = useState<TComboOption[]>([]);
+    const [districtOptions, setDistrictOptions] = useState<TComboOption[]>([]);
+    const [subdistrictOptions, setSubDistrictOptions] = useState<TComboOption[]>([]);
     const { useDivision } = useBdInf();
     const divisionData = useDivision();
     const [fileData, setFileData] = useState<File[]>([])
@@ -161,7 +161,7 @@ const PostDetailsPage = () => {
                 label: division.name,
                 value: division.name,
             }));
-            setDivisionOptions(divisionOptions as ComboOption[]);
+            setDivisionOptions(divisionOptions as TComboOption[]);
 
             // Get districts for selected division
             if (division) {
@@ -176,7 +176,7 @@ const PostDetailsPage = () => {
                         value: district.name,
                     }));
                     updateLocation({ "district": districtOpts[0]?.value || "" });
-                    setDistrictOptions(districtOpts as ComboOption[]);
+                    setDistrictOptions(districtOpts as TComboOption[]);
 
                     // Get subdistricts for selected district
                     if (district) {
@@ -196,7 +196,7 @@ const PostDetailsPage = () => {
                                 };
                             });
                             updateLocation({ "subDistrict": subdistrictOpts[0]?.value || "" });
-                            setSubDistrictOptions(subdistrictOpts as ComboOption[]);
+                            setSubDistrictOptions(subdistrictOpts as TComboOption[]);
                         }
                     }
                 }
