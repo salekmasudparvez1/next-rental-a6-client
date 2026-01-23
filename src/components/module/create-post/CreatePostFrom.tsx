@@ -14,7 +14,7 @@ import LocationPicker from '../location/LocationPicker';
 import { X } from 'lucide-react';
 import LocationPreview from '../location/LocationPreview';
 import { Spinner } from '@/components/ui/spinner';
-import InputCombo, { ComboOption } from './InputCombo';
+import InputCombo, { TComboOption } from './InputCombo';
 import { useBdInf } from '@/hooks/use-bdinfo';
 import { TDivision, TDistrict, TUpazila } from '@/types/bd-data';
 import { useCreatePost } from '@/hooks/use-post';
@@ -60,9 +60,9 @@ const CreatePostFrom = () => {
     });
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [openLocationDialog, setOpenLocationDialog] = useState(false);
-    const [divisionOptions, setDivisionOptions] = useState<ComboOption[]>([]);
-    const [districtOptions, setDistrictOptions] = useState<ComboOption[]>([]);
-    const [subdistrictOptions, setSubDistrictOptions] = useState<ComboOption[]>([]);
+    const [divisionOptions, setDivisionOptions] = useState<TComboOption[]>([]);
+    const [districtOptions, setDistrictOptions] = useState<TComboOption[]>([]);
+    const [subdistrictOptions, setSubDistrictOptions] = useState<TComboOption[]>([]);
     const { useDivision } = useBdInf();
     const divisionData = useDivision();
     const [fileData, setFileData] = useState<File[]>([])
@@ -97,7 +97,7 @@ const CreatePostFrom = () => {
                 label: division.name,
                 value: division.name,
             }));
-            setDivisionOptions(divisionOptions as ComboOption[]);
+            setDivisionOptions(divisionOptions as TComboOption[]);
 
             // Get districts for selected division
             if (division) {
@@ -115,7 +115,7 @@ const CreatePostFrom = () => {
                         label: district.name,
                         value: district.name,
                     }));
-                    setDistrictOptions(districtOpts as ComboOption[]);
+                    setDistrictOptions(districtOpts as TComboOption[]);
 
                     // Get subdistricts for selected district
                     const selectedDistrict = selectedDivision.districts.find(
@@ -136,7 +136,7 @@ const CreatePostFrom = () => {
                         if (firstSubDistrict) {
                             updateLocation({ "subDistrict": firstSubDistrict });
                         }
-                        setSubDistrictOptions(subdistrictOpts as ComboOption[]);
+                        setSubDistrictOptions(subdistrictOpts as TComboOption[]);
                     }
                 }
             }

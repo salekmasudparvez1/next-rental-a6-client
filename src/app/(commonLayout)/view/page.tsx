@@ -1,7 +1,9 @@
 import { ViewHeroSection } from '@/components/module/hero-section/ViewHeroSection';
 import HouseURL from "@/assets/house/house.svg"
+import AllPost from '@/components/module/all-post/AllPost';
 
 const ViewAllPostPage = () => {
+
     return (
         <div>
             {/* hero section part */}
@@ -15,16 +17,18 @@ const ViewAllPostPage = () => {
             }}
             buttons={{
                 primary:{
-                    text:"View All Request",
-                    url:"/tenat/view-all"
+                    text:"view profile",
+                    url:"https://github.com/salekmasudparvez1/next-rental-a6-client"
                 }
                 ,
                 secondary:{
-                   text :"View All History",
-                   url:"/tenant/history"
+                   text :"Contact with us",
+                   url:"/contact"
                 }
             }}
             />
+             <AllPost />
+            
             
         </div>
     );

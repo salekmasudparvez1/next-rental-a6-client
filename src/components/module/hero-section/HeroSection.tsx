@@ -148,7 +148,7 @@ export default function HeroSection() {
         ) : rentals?.slice(0, 6).map((house) => (
           <Card
             key={house?._id}
-            className="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+            className="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:translate-y-1 hover:shadow-none"
           >
             {/* IMAGE */}
             <div className="relative overflow-hidden">

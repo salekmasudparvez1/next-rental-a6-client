@@ -113,3 +113,13 @@ export interface NavigationNestedItemWithItemsType
 export type NavigationNestedItem =
   | NavigationNestedItemWithHrefType
   | NavigationNestedItemWithItemsType
+export interface IQueryParamsAllPost {
+  page?: number;
+  limit?: number;
+  bedrooms?: string;
+  district?: string;
+  division?: string;
+  maxPrice?: string;
+  minPrice?: string;
+  subDistrict?: string;
+}

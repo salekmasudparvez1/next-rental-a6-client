@@ -14,14 +14,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 
-export interface ComboOption {
+export interface TComboOption {
   value: string;
   label: string;
   id?: number;
 }
 
 interface InputComboProps {
-  options: ComboOption[];
+  options: TComboOption[];
   value?: string; // controlled value
   onChange?: (value: string) => void; // callback when value changes
   placeholder?: string;
