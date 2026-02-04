@@ -79,8 +79,8 @@ export default function LoginPage() {
 
 
     return (
-        <Card className="w-full max-w-sm group mx-4 sm:mx-0 relative ">
-            <CardHeader className="w-full " >
+        <Card className="w-full max-w-sm group mx-4 sm:mx-0 p-4 relative ">
+            <CardHeader className="w-full mb-3" >
                 <CardTitle className="text-2xl text-center">Welcome Back</CardTitle>
                 <CardDescription className="text-center">
                     Login using email or username

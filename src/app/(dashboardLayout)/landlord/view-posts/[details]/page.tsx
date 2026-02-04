@@ -22,6 +22,7 @@ import { useParams, useRouter } from 'next/navigation';
 import PropertyFormSkeleton from '@/components/module/loading/PropertyFormSkeliton';
 import { RentalHouseCreateZodSchema, RentalHouseFormData } from '@/components/module/create-post/post.validation';
 import { IFeature } from '@/types/post';
+import SectionHeader from '@/components/module/sectionHeader/SectionHeader';
 
 
 
@@ -277,9 +278,13 @@ const PostDetailsPage = () => {
     }
     return (
         <div>
-
+ <SectionHeader
+                title="Update Rental Property"
+                subtitle="Update post"
+                description="Update a new rental property to your listings."
+            />
             <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-5xl mx-auto p-4 md:p-6'>
-                <Card className='shadow-lg'>
+                <Card className='shadow-lg p-4'>
 
                     <CardContent className='pt-2'>
                         <div className="space-y-8">

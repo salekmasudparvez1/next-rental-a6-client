@@ -122,9 +122,11 @@ const ViewPostPage = () => {
           const variant =
             key === 'available' ? 'default' : key === 'rented' ? 'destructive' : key === 'maintenance' ? 'outline' : 'secondary';
           return (
-            <Badge variant={variant} className="uppercase">
+            <div className='w-full flex justify-center items-center text-center'>
+              <Badge variant={variant} className={`uppercase text-center  mx-auto ${key === 'available' ? 'text-green-500 bg-white border-green-500' : key === 'rented' ? 'text-white bg-red-500 border-red-500' : key === 'maintenance' ? 'text-yellow-500 border-yellow-500 bg-yellow-50' : 'text-gray-500'}`}>
               {status}
             </Badge>
+            </div>
           );
         },
         enableSorting: true,

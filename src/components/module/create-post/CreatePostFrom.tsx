@@ -205,7 +205,7 @@ const CreatePostFrom = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-5xl mx-auto p-4 md:p-6 '>
-            <Card className='shadow-lg '>
+            <Card className='shadow-lg p-4'>
 
                 <CardContent className='pt-2'>
                     <div className="space-y-8">

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useUser } from '@/contexts/UseerContext';
+import { Spinner } from '@/components/ui/spinner';
 import { deleteUser, getAllUsers, updateUserRole } from '@/service/user';
 
 import { IUserForTable } from '@/types/user';
@@ -24,8 +24,8 @@ const AllUsersPage = () => {
     const [allUsers, setAllUsers] = useState<IUserForTable[]>([]);
     // pagination state can be added here later
     const [pageCount, setPageCount] = useState(0)
-    const { isLoading, setIsLoading } = useUser()
     const [selectedRows, setSelectedRows] = useState<number>(0);
+    const [loading ,setLoading] = useState(true)
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 10,
@@ -34,7 +34,7 @@ const AllUsersPage = () => {
 
     const LoadData = async () => {
         try {
-            setIsLoading(true);
+            setLoading(true)
             const response = await getAllUsers(pagination?.pageIndex, pagination?.pageSize);
             type UsersResponse = {
                 data: IUserForTable[];
@@ -49,7 +49,7 @@ const AllUsersPage = () => {
             const errorMessage = error instanceof Error ? error.message : "Failed to fetch users";
             toast.error(errorMessage);
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     }
 
@@ -95,8 +95,8 @@ const AllUsersPage = () => {
             header: ({ table }) => (
                 <Checkbox
                     checked={
-                        table.getIsAllPageRowsSelected() ||
-                        (table.getIsSomePageRowsSelected() && "indeterminate")
+                        table?.getIsAllPageRowsSelected() ||
+                        (table?.getIsSomePageRowsSelected() && "indeterminate")
                     }
                     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                     aria-label="Select all"
@@ -225,7 +225,13 @@ const AllUsersPage = () => {
         }
     ]
 
-
+  if (loading) {
+          return (
+              <div className="loader-overlay flex justify-center items-center">
+                  <Spinner variant="ring" />
+              </div>
+          );
+      }
 
     return (
         <div className='p-5 space-y-4'>
@@ -253,7 +259,7 @@ const AllUsersPage = () => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>}
-            {isLoading ?
+            {loading ?
                 null :
                 <DataTable
                     columns={columns}

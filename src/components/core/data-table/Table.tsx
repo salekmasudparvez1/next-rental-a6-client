@@ -133,8 +133,10 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 className="border border-gray-300 rounded-md bg-white p-3 shadow-sm transition-all duration-150"
               >
-                <button
-                  className="flex w-full items-center justify-between text-left"
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="flex w-full items-center justify-between text-left cursor-pointer"
                   onClick={() =>
                     setExpandedRowId((prev) => (prev === row.id ? null : row.id))
                   }
@@ -145,10 +147,12 @@ export function DataTable<TData, TValue>({
                       primaryCell.getContext()
                     )}
                   </div>
+
                   <span className="text-xs text-muted-foreground">
                     {expandedRowId === row.id ? "Hide" : "View"}
                   </span>
-                </button>
+                </div>
+
                 <AnimatePresence initial={false}>
                   {expandedRowId === row.id && (
                     <motion.div
@@ -163,7 +167,7 @@ export function DataTable<TData, TValue>({
                         opacity: { duration: 0.2 }
                       }}
                       onClick={(e) => e.stopPropagation()}
-                      className="overflow-hidden" 
+                      className="overflow-hidden"
                     >
                       <motion.div
                         initial={{ scale: 0.8 }}
